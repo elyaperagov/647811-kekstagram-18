@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Илья Пирогов](https://up.htmlacademy.ru/javascript/18/user/647811).
-* Наставник: `Неизвестно`.
+* Наставник: [Роман Нуйсков] (https://htmlacademy.ru/profile/id1077815).
 
 ---
 
