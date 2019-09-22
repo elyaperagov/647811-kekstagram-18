@@ -4,6 +4,52 @@
 var pictures = document.querySelector('.pictures');
 var template = document.querySelector('#picture').content.querySelector('.picture');
 
+
+var likes = {
+  minimum: 15,
+  maximum: 200
+};
+
+
+var messages = {
+  minimum: 1,
+  maximum: 20
+};
+
+
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+var images = [];
+var i;
+for (i = 0; i < 25; i++) {
+  images.push({
+    url: 'photos/' + (i + 1) + '.jpg',
+    likes: getRandomNumber(likes.minimum, likes.maximum),
+    messages: getRandomNumber(messages.minimum, messages.maximum)
+  });
+}
+
+
+var renderTemplate = function () {
+  var userImage = template.cloneNode(true);
+
+  userImage.querySelector('.picture__img').src = images[i].url;
+  userImage.querySelector('.picture__likes').textContent = images[i].likes;
+  userImage.querySelector('.picture__comments').textContent = images[i].messages;
+
+  return userImage;
+};
+
+var fragment = document.createDocumentFragment();
+for (i = 0; i < images.length; i++) {
+  fragment.appendChild(renderTemplate(images[i]));
+}
+pictures.appendChild(fragment);
+
+/*
 var comments = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -13,62 +59,7 @@ var comments = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-var likes = {
-  minimum: 15,
-  maximum: 200
-};
-
-var photos = {
-  minimum: 1,
-  maximum: 25
-};
-
-var comments = {
-  minimum: 1,
-  maximum: 2000
-};
-
-var names = ['ААРОН', 'АБАЙ', 'АББАС', 'АБДУЛЛА', 'АБДУЛА', 'АБЕЛЬ', 'АБЕЛЬ', 'АВЕЛ', 'АВЕЛЬ', 'АБОВ', 'АБРАМ', 'АВРААМ', 'АБРЕК', 'АВАЗ'];
-
-
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-
 function arrayRandElement(arr) {
   var rand = Math.floor(Math.random() * arr.length);
   return arr[rand];
-}
-
-
-var images = [];
-  var i;
-    for (i = 0; i <= 25; i++) {
-    images.push({
-    url:'photos/' + getRandomNumber(photos.minimum, photos.maximum) + '.jpg',
-      likes: getRandomNumber(likes.minimum, likes.maximum),
-      comments:  getRandomNumber(comments.minimum, comments.maximum),
-      //names: arrayRandElement(names)
-})
-}
-
-
-
-var renderTemplate = function () {
-  var userImage = template.cloneNode(true);
-
-  userImage.querySelector('.picture__img').src = images[i].url;
-  userImage.querySelector('.picture__likes').textContent = images[i].likes;
-  userImage.querySelector('.picture__comments').textContent = images[i].comments;
-  //userImage.querySelector('.picture__comments').textContent = images[i].names;
-
-  return userImage;
-};
-
-var fragment = document.createDocumentFragment();
-for (var i = 0; i < images.length; i++) {
-  fragment.appendChild(renderTemplate(images[i]));
-}
-pictures.appendChild(fragment);
-
+}*/
