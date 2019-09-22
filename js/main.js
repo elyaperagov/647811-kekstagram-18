@@ -1,0 +1,121 @@
+'use strict';
+
+
+var pictures = document.querySelector('.pictures');
+var template = document.querySelector('#picture').content.querySelector('.picture');
+
+var comments = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+];
+
+var likes = {
+  minimum: 15,
+  maximum: 200
+};
+
+var photos = {
+  minimum: 1,
+  maximum: 25
+};
+
+
+function getRandomLikes(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomPhotos(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function arrayRandElement(arr) {
+  var rand = Math.floor(Math.random() * arr.length);
+  return arr[rand];
+}
+
+var images = [
+  {
+    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
+    likes: getRandomLikes(likes.minimum, likes.maximum),
+    comments: arrayRandElement(comments)
+  },
+  {
+    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
+    likes: getRandomLikes(likes.minimum, likes.maximum),
+    comments: arrayRandElement(comments)
+  },
+  {
+    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
+    likes: getRandomLikes(likes.minimum, likes.maximum),
+    comments: arrayRandElement(comments)
+  },
+  {
+    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
+    likes: getRandomLikes(likes.minimum, likes.maximum),
+    comments: arrayRandElement(comments)
+  },
+  {
+    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
+    likes: getRandomLikes(likes.minimum, likes.maximum),
+    comments: arrayRandElement(comments)
+  },
+  {
+    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
+    likes: getRandomLikes(likes.minimum, likes.maximum),
+    comments: arrayRandElement(comments)
+  },
+  {
+    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
+    likes: getRandomLikes(likes.minimum, likes.maximum),
+    comments: arrayRandElement(comments)
+  },
+  {
+    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
+    likes: getRandomLikes(likes.minimum, likes.maximum),
+    comments: arrayRandElement(comments)
+  }
+];
+
+/*
+for (var i = 0; i < 25; i++) {
+  var images = [
+   {
+  url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
+  likes: getRandomLikes(likes.minimum, likes.maximum),
+  comments: arrayRandElement(comments)
+    }
+  ]
+};
+
+var getPhotos = function () {
+    var images = [];
+    for (var i = 0; i < 25; i++) {
+      images[i] = {
+        url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
+        likes: getRandomLikes(likes.minimum, likes.maximum),
+        comments: arrayRandElement(comments)
+    }
+    return images;
+  }
+}*/
+
+var renderTemplate = function () {
+  var userImage = template.cloneNode(true);
+
+  userImage.querySelector('.picture__img').src = images[i].url;
+  userImage.querySelector('.picture__likes').textContent = images[i].likes;
+  userImage.querySelector('.picture__comments').textContent = images[i].comments;
+
+  return userImage;
+};
+
+var fragment = document.createDocumentFragment();
+for (var i = 0; i < images.length; i++) {
+  fragment.appendChild(renderTemplate(images[i]));
+}
+pictures.appendChild(fragment);
+
