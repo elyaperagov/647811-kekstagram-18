@@ -23,85 +23,37 @@ var photos = {
   maximum: 25
 };
 
+var comments = {
+  minimum: 1,
+  maximum: 2000
+};
 
-function getRandomLikes(min, max) {
+var names = ['ААРОН', 'АБАЙ', 'АББАС', 'АБДУЛЛА', 'АБДУЛА', 'АБЕЛЬ', 'АБЕЛЬ', 'АВЕЛ', 'АВЕЛЬ', 'АБОВ', 'АБРАМ', 'АВРААМ', 'АБРЕК', 'АВАЗ'];
+
+
+function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRandomPhotos(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
 function arrayRandElement(arr) {
   var rand = Math.floor(Math.random() * arr.length);
   return arr[rand];
 }
 
-var images = [
-  {
-    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
-    likes: getRandomLikes(likes.minimum, likes.maximum),
-    comments: arrayRandElement(comments)
-  },
-  {
-    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
-    likes: getRandomLikes(likes.minimum, likes.maximum),
-    comments: arrayRandElement(comments)
-  },
-  {
-    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
-    likes: getRandomLikes(likes.minimum, likes.maximum),
-    comments: arrayRandElement(comments)
-  },
-  {
-    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
-    likes: getRandomLikes(likes.minimum, likes.maximum),
-    comments: arrayRandElement(comments)
-  },
-  {
-    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
-    likes: getRandomLikes(likes.minimum, likes.maximum),
-    comments: arrayRandElement(comments)
-  },
-  {
-    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
-    likes: getRandomLikes(likes.minimum, likes.maximum),
-    comments: arrayRandElement(comments)
-  },
-  {
-    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
-    likes: getRandomLikes(likes.minimum, likes.maximum),
-    comments: arrayRandElement(comments)
-  },
-  {
-    url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
-    likes: getRandomLikes(likes.minimum, likes.maximum),
-    comments: arrayRandElement(comments)
-  }
-];
 
-/*
-for (var i = 0; i < 25; i++) {
-  var images = [
-   {
-  url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
-  likes: getRandomLikes(likes.minimum, likes.maximum),
-  comments: arrayRandElement(comments)
-    }
-  ]
-};
+var images = [];
+  var i;
+    for (i = 0; i <= 25; i++) {
+    images.push({
+    url:'photos/' + getRandomNumber(photos.minimum, photos.maximum) + '.jpg',
+      likes: getRandomNumber(likes.minimum, likes.maximum),
+      comments:  getRandomNumber(comments.minimum, comments.maximum),
+      //names: arrayRandElement(names)
+})
+}
 
-var getPhotos = function () {
-    var images = [];
-    for (var i = 0; i < 25; i++) {
-      images[i] = {
-        url: 'photos/' + getRandomPhotos(photos.minimum, photos.maximum) + '.jpg',
-        likes: getRandomLikes(likes.minimum, likes.maximum),
-        comments: arrayRandElement(comments)
-    }
-    return images;
-  }
-}*/
+
 
 var renderTemplate = function () {
   var userImage = template.cloneNode(true);
@@ -109,6 +61,7 @@ var renderTemplate = function () {
   userImage.querySelector('.picture__img').src = images[i].url;
   userImage.querySelector('.picture__likes').textContent = images[i].likes;
   userImage.querySelector('.picture__comments').textContent = images[i].comments;
+  //userImage.querySelector('.picture__comments').textContent = images[i].names;
 
   return userImage;
 };
