@@ -49,6 +49,25 @@ for (i = 0; i < images.length; i++) {
 }
 pictures.appendChild(fragment);
 
+var popup = document.querySelector('.big-picture');
+var openPopupButton = document.querySelectorAll('.picture__img');
+var closePopupButton = popup.querySelectorAll('.big-picture__cancel');
+
+for (var i = 0; i < openPopupButton.length; i++) {
+  openPopupButton[i].addEventListener('click', function(e) {
+    e.preventDefault();
+    popup.classList.remove("hidden");
+  });
+}
+
+for (var j = 0; j < closePopupButton.length; j++) {
+  closePopupButton[j].addEventListener("click", function(e) {
+    e.preventDefault();
+    e.target.closest(".big-picture").classList.add("hidden");
+  });
+}
+
+
 /*
 var comments = [
   'Всё отлично!',
