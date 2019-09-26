@@ -51,18 +51,6 @@ for (var i = 0; i < images.length; i++) {
 
 pictures.appendChild(fragment);
 
-
-/*
-var p = function (array) {
-  var fragment = document.createDocumentFragment();
-    for (var i = 0; i < array.length; i++) {
-  fragment.appendChild(renderTemplate(array[i]));
-  }
-  return fragment
-}
-
-p(images);
-*/
 var bigPicture = document.querySelector('.big-picture');
 var openBigPictures = document.querySelectorAll('.picture__img');
 var closeBigPictures = bigPicture.querySelectorAll('.big-picture__cancel');
