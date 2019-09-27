@@ -32,37 +32,26 @@ for (var imageNumber = 1; imageNumber <= 25; imageNumber++) {
   });
 }
 
-
-var renderTemplate = function () {
+function renderTemplate(image) {
   var userImage = template.cloneNode(true);
-  var image = images[i];
+  //  var image = images[i];
 
   userImage.querySelector('.picture__img').src = image.url;
   userImage.querySelector('.picture__likes').textContent = image.likes;
   userImage.querySelector('.picture__comments').textContent = image.messages;
 
   return userImage;
-};
-
-
-for (var i = 0; i < images.length; i++) {
-  fragment.appendChild(renderTemplate(images[i]));
 }
 
+function getImage(array) {
+  for (var i = 0; i < array.length; i++) {
+    fragment.appendChild(renderTemplate(array[i]));
+  }
+}
+
+getImage(images);
 pictures.appendChild(fragment);
 
-
-/*
-var p = function (array) {
-  var fragment = document.createDocumentFragment();
-    for (var i = 0; i < array.length; i++) {
-  fragment.appendChild(renderTemplate(array[i]));
-  }
-  return fragment
-}
-
-p(images);
-*/
 var bigPicture = document.querySelector('.big-picture');
 var openBigPictures = document.querySelectorAll('.picture__img');
 var closeBigPictures = bigPicture.querySelectorAll('.big-picture__cancel');
@@ -80,5 +69,3 @@ for (var j = 0; j < closeBigPictures.length; j++) {
     e.target.closest('.big-picture').classList.add('hidden');
   });
 }
-
-
