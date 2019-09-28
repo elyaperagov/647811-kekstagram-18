@@ -3,7 +3,6 @@
 
 var pictures = document.querySelector('.pictures');
 var template = document.querySelector('#picture').content.querySelector('.picture');
-var fragment = document.createDocumentFragment();
 
 
 var likes = {
@@ -44,13 +43,14 @@ function renderTemplate(image) {
 }
 
 function getImage(array) {
+  var fragment = document.createDocumentFragment();
   for (var i = 0; i < array.length; i++) {
     fragment.appendChild(renderTemplate(array[i]));
   }
+  return fragment;
 }
 
-getImage(images);
-pictures.appendChild(fragment);
+pictures.appendChild(getImage(images));
 
 var bigPicture = document.querySelector('.big-picture');
 var openBigPictures = document.querySelectorAll('.picture__img');
