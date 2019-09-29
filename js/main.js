@@ -69,3 +69,37 @@ for (var j = 0; j < closeBigPictures.length; j++) {
     e.target.closest('.big-picture').classList.add('hidden');
   });
 }
+
+
+var upload = document.querySelector('#upload-file');
+
+var uploadShow = function () {
+    var filtersWindow = document.querySelector('.img-upload__overlay');
+    filtersWindow.classList.remove('hidden');
+  };
+
+upload.addEventListener('change', uploadShow);
+
+
+var RESIZE_STEP = 25;
+var RESIZE_MAX = 100;
+var resize = document.querySelector('.scale__control--value');
+var resizeSmaller = document.querySelector('.scale__control--smaller');
+var resizeBigger = document.querySelector('.scale__control--bigger');
+
+var resizeBiggerHandler = function () {
+    if (parseInt(resize.value, 10) < RESIZE_MAX) {
+      resize.value = parseInt(resize.value, 10) + RESIZE_STEP + '%';
+  }
+};
+
+var resizeSmallerHandler = function () {
+    if (parseInt(resize.value, 10) < RESIZE_MAX) {
+      resize.value = parseInt(resize.value, 10) - RESIZE_STEP + '%';
+  }
+};
+
+resizeBigger.addEventListener('click', resizeBiggerHandler);
+resizeSmaller.addEventListener('click', resizeSmallerHandler);
+
+
