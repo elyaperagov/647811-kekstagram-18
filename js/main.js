@@ -100,7 +100,7 @@ var resizeBiggerHandler = function () {
 };
 
 var resizeSmallerHandler = function () {
-  if (parseInt(resize.value, 10) < RESIZE_MAX) {
+  if (parseInt(resize.value, 10) > RESIZE_STEP) {
     resize.value = parseInt(resize.value, 10) - RESIZE_STEP + '%';
     preview.style.transform = 'scale(0.' + parseInt(resize.value, 10) + ')';
   }
@@ -108,3 +108,16 @@ var resizeSmallerHandler = function () {
 
 resizeBigger.addEventListener('click', resizeBiggerHandler);
 resizeSmaller.addEventListener('click', resizeSmallerHandler);
+
+// var scalePin = document.querySelector('.scale__pin');
+/*
+var hashTags = document.querySelector('.text__hashtags');
+var hashTagsNumber {
+  MIN_LENGTH: 2,
+  MAX_LENGTH: 20
+}
+
+var hashTagsInvalidhandler = function () {
+
+}
+*/
