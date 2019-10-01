@@ -89,35 +89,63 @@ var resizeSmaller = document.querySelector('.scale__control--smaller');
 var resizeBigger = document.querySelector('.scale__control--bigger');
 var preview = document.querySelector('.img-upload__preview');
 
+/*
+function formatToPercent(number) {
+return number + '%';
+}*/
+
 
 var resizeBiggerHandler = function () {
-  if (parseInt(resize.value, 10) < RESIZE_MAX) {
-    resize.value = parseInt(resize.value, 10) + RESIZE_STEP + '%';
-    preview.style.transform = 'scale(0.' + parseInt(resize.value, 10) + ')';
-  } else if (parseInt(resize.value, 10) === RESIZE_MAX) {
+  if (Number.parseInt(resize.value) < RESIZE_MAX) {
+    resize.value = Number.parseInt(resize.value) + RESIZE_STEP + '%';
+    preview.style.transform = 'scale(0.' + Number.parseInt(resize.value) + ')';
+  } else if (Number.parseInt(resize.value) === RESIZE_MAX) {
     preview.style.transform = 'none';
   }
 };
 
 var resizeSmallerHandler = function () {
-  if (parseInt(resize.value, 10) > RESIZE_STEP) {
-    resize.value = parseInt(resize.value, 10) - RESIZE_STEP + '%';
-    preview.style.transform = 'scale(0.' + parseInt(resize.value, 10) + ')';
+  if (Number.parseInt(resize.value) > RESIZE_STEP) {
+    resize.value = Number.parseInt(resize.value) - RESIZE_STEP + '%';
+    preview.style.transform = 'scale(0.' + Number.parseInt(resize.value) + ')';
   }
 };
 
 resizeBigger.addEventListener('click', resizeBiggerHandler);
 resizeSmaller.addEventListener('click', resizeSmallerHandler);
 
-// var scalePin = document.querySelector('.scale__pin');
+var hashTag = document.querySelector('.text__hashtags');
+var submitButton = document.querySelector('#upload-submit');
+
+  var PREFERENCES = {
+    START_POSITION: 0,
+    MAX_QUANTITY: 5,
+    MAX_LENGTH: 20
+  };
+
+
+var Errors = {
+  HASHTAGS_TOO_MANY: 'нельзя указать больше пяти хэш-тегов;',
+  HASHTAG_HAS_NO_HASH: 'хэш-тег начинается с символа # (решётка);',
+  HASHTAG_TOO_LONG: 'максимальная длина одного хэш-тега 20 символов, включая решётку;',
+  HASHTAG_ONLY_HASH: 'хеш-тег не может состоять только из одной решётки;',
+  HASHTAG_USED_TWICE: 'один и тот же хэш-тег не может быть использован дважды;',
+  HASHTAG_SPACE: 'хэш-теги разделяются пробелами;',
+};
+
 /*
-var hashTags = document.querySelector('.text__hashtags');
-var hashTagsNumber {
-  MIN_LENGTH: 2,
-  MAX_LENGTH: 20
-}
+  var hashTagsInvalidhandler = function (hashtag) {
+    if (hashtag[PREFERENCES.START_POSITION] !== '#') {
+      hashTag.setCustomValidity(Errors.HASHTAG_HAS_NO_HASH);
+      return false;
+    } else if (hashtag.length > PREFERENCES.MAX_LENGTH) {
+      hashTag.setCustomValidity(Errors.HASHTAG_TOO_LONG);
+      return false;
+    } else if (hashtag.length > PREFERENCES.MAX_LENGTH) {
+      hashTag.setCustomValidity('Максимальная длина одного хэш-тега 20 символов, включая решётку');
+      return false;
+    }
+    return true;
+  };
 
-var hashTagsInvalidhandler = function () {
-
-}
-*/
+submitButton.addEventListener('submit', hashTagsInvalidhandler(hashTag));*/
