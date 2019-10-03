@@ -137,7 +137,7 @@ var Errors = {
 
 var formElement = document.querySelector('#upload-select-image');
 var inputElement = formElement.querySelector('.text__hashtags');
-var buttonElement = formElement.querySelector('.img-upload__submit');
+var buttonElement = formElement.querySelector('#upload-submit');
 
 //console.log(formElement, inputElement, buttonElement);
 
@@ -153,12 +153,17 @@ function checkDoubleHashtags(hashtags) {
   return false;
 }
 
+var handler = function(event) {
+  var hashtags = inputElement.value.split(' ');
+  validate(hashtags);
+}
+
 var validateHashtag = function(hashtag) {
   var isLong = hashtag.length < 2;
   var isNotHashtag = hashtag[0] !== '#';
   var isOnlyHash = hashtag === '#';
- // var isTooMany = hashtag.length > PREFERENCES.MAX_QUANTITY;
-  var isSpaceUsed = hashtag.indexOf(PREFERENCES.HASH, 1) > 1;
+  var isTooMany = hashtag.length > PREFERENCES.MAX_QUANTITY;
+  var isSpaceUsed = hashtag.indexOf('#', PREFERENCES.START_POSITION) > 0;
   var isDouble = checkDoubleHashtags(hashtag);
 
   if (isLong) {
@@ -176,10 +181,10 @@ var validateHashtag = function(hashtag) {
     return false;
   }
 
- // if (isTooMany) {
- //   inputElement.setCustomValidity(Errors.HASHTAGS_TOO_MANY);
- //   return false;
- //}
+  if (isTooMany) {
+    inputElement.setCustomValidity(Errors.HASHTAGS_TOO_MANY);
+    return false;
+ }
 
   if (isSpaceUsed) {
     inputElement.setCustomValidity(Errors.HASHTAG_SPACE);
@@ -205,12 +210,6 @@ var validate = function(hashtags) {
     inputElement.setCustomValidity('');
   }
 }
-
-var handler = function(event) {
-  var hashtags = inputElement.value.split(' ');
-  validate(hashtags);
-}
-
 
 buttonElement.addEventListener('click', handler);
 
