@@ -114,10 +114,11 @@ var resizeSmallerHandler = function () {
 resizeBigger.addEventListener('click', resizeBiggerHandler);
 resizeSmaller.addEventListener('click', resizeSmallerHandler);
 
-var hashTag = document.querySelector('.text__hashtags');
-var submitButton = document.querySelector('#upload-submit');
+//var hashTag = document.querySelector('.text__hashtags');
+//var submitButton = document.querySelector('#upload-submit');
 
   var PREFERENCES = {
+    HASH: '#',
     START_POSITION: 0,
     MAX_QUANTITY: 5,
     MAX_LENGTH: 20
@@ -132,6 +133,86 @@ var Errors = {
   HASHTAG_USED_TWICE: 'один и тот же хэш-тег не может быть использован дважды;',
   HASHTAG_SPACE: 'хэш-теги разделяются пробелами;',
 };
+
+
+var formElement = document.querySelector('#upload-select-image');
+var inputElement = formElement.querySelector('.text__hashtags');
+var buttonElement = formElement.querySelector('.img-upload__submit');
+
+//console.log(formElement, inputElement, buttonElement);
+
+function checkDoubleHashtags(hashtags) {
+  for (var i = 0; i < hashtags.length; i++) {
+    var currentHashtag = hashtags[i];
+    for (var j = 0; j < hashtags.length; j++) {
+      if (currentHashtag === hashtags[j] && i !== j) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+var validateHashtag = function(hashtag) {
+  var isLong = hashtag.length < 2;
+  var isNotHashtag = hashtag[0] !== '#';
+  var isOnlyHash = hashtag === '#';
+ // var isTooMany = hashtag.length > PREFERENCES.MAX_QUANTITY;
+  var isSpaceUsed = hashtag.indexOf(PREFERENCES.HASH, 1) > 1;
+  var isDouble = checkDoubleHashtags(hashtag);
+
+  if (isLong) {
+    inputElement.setCustomValidity(Errors.HASHTAG_TOO_LONG);
+    return false;
+  }
+
+  if (isNotHashtag) {
+    inputElement.setCustomValidity(Errors.HASHTAG_HAS_NO_HASH);
+    return false;
+  }
+
+  if (isOnlyHash) {
+    inputElement.setCustomValidity(Errors.HASHTAG_ONLY_HASH);
+    return false;
+  }
+
+ // if (isTooMany) {
+ //   inputElement.setCustomValidity(Errors.HASHTAGS_TOO_MANY);
+ //   return false;
+ //}
+
+  if (isSpaceUsed) {
+    inputElement.setCustomValidity(Errors.HASHTAG_SPACE);
+    return false;
+  }
+
+  if (isDouble) {
+    inputElement.setCustomValidity(Errors.HASHTAG_USED_TWICE);
+    return false;
+  }
+
+  return true;
+}
+
+var validate = function(hashtags) {
+  var result = true;
+
+  for (var i = 0; i < hashtags.length; i++) {
+    var hastag = hashtags[i];
+    result = result && validateHashtag(hastag)
+  }
+  if (result) {
+    inputElement.setCustomValidity('');
+  }
+}
+
+var handler = function(event) {
+  var hashtags = inputElement.value.split(' ');
+  validate(hashtags);
+}
+
+
+buttonElement.addEventListener('click', handler);
 
 /*
   var hashTagsInvalidhandler = function (hashtag) {
