@@ -153,16 +153,11 @@ function checkDoubleHashtags(hashtags) {
   return false;
 }
 
-var handler = function(event) {
-  var hashtags = inputElement.value.split(' ');
-  validate(hashtags);
-}
-
 var validateHashtag = function(hashtag) {
   var isLong = hashtag.length < 2;
   var isNotHashtag = hashtag[0] !== '#';
   var isOnlyHash = hashtag === '#';
-  var isTooMany = hashtag.length > PREFERENCES.MAX_QUANTITY;
+  //var isTooMany = hashtag.length > PREFERENCES.MAX_QUANTITY;
   var isSpaceUsed = hashtag.indexOf('#', PREFERENCES.START_POSITION) > 0;
   var isDouble = checkDoubleHashtags(hashtag);
 
@@ -181,10 +176,10 @@ var validateHashtag = function(hashtag) {
     return false;
   }
 
-  if (isTooMany) {
-    inputElement.setCustomValidity(Errors.HASHTAGS_TOO_MANY);
-    return false;
- }
+  //if (isTooMany) {
+  //  inputElement.setCustomValidity(Errors.HASHTAGS_TOO_MANY);
+  //  return false;
+ //}
 
   if (isSpaceUsed) {
     inputElement.setCustomValidity(Errors.HASHTAG_SPACE);
@@ -197,6 +192,15 @@ var validateHashtag = function(hashtag) {
   }
 
   return true;
+}
+
+var handler = function(event) {
+  var hashtags = inputElement.value.toLowerCase().split(' ');
+  if (hashtags.length > PREFERENCES.MAX_QUANTITY) {
+      inputElement.setCustomValidity(Errors.HASHTAGS_TOO_MANY);
+      return false;
+    }
+  validate(hashtags);
 }
 
 var validate = function(hashtags) {
@@ -229,3 +233,92 @@ buttonElement.addEventListener('click', handler);
   };
 
 submitButton.addEventListener('submit', hashTagsInvalidhandler(hashTag));*/
+
+
+var pin = document.querySelector('.effect-level__pin');
+var effectList = document.querySelector('.effects__list');
+var preview = document.querySelector('.img-upload__preview');
+var effectChrome = document.querySelector('#effect-chrome');
+var effectSepia = document.querySelector('#effect-sepia');
+var effectMarvin = document.querySelector('#effect-marvin');
+var effectPhobos = document.querySelector('#effect-phobos');
+var effectHeat = document.querySelector('#effect-heat');
+
+var chrome = {
+      class: 'effects__preview--chrome',
+      css: 'grayscale',
+      max: 1,
+      min: 0
+    }
+
+var sepia = {
+      class: 'effects__preview--sepia',
+      css: 'sepia',
+      max: 1,
+      min: 0
+    }
+var  marvin = {
+      class: 'effects__preview--marvin',
+      css: 'invert',
+      max: 100,
+      min: 0
+    }
+var phobos = {
+      class: 'effects__preview--phobos',
+      css: 'blur',
+      max: 3,
+      min: 0
+    }
+var heat = {
+      class: 'effects__preview--heat',
+      css: 'brightness',
+      max: 3,
+      min: 1
+    }
+
+  effectChrome.addEventListener('click', function (evt) {
+  var toggler = evt.target.closest('input');
+  if (toggler) {
+    preview.classList = 'img-upload__preview';
+    preview.removeAttribute('style');
+    preview.classList.add(chrome.class);
+  }
+});
+
+  effectSepia.addEventListener('click', function (evt) {
+  var toggler = evt.target.closest('input');
+  if (toggler) {
+    preview.classList = 'img-upload__preview';
+    preview.removeAttribute('style');
+    preview.classList.add(sepia.class);
+  }
+});
+
+  effectMarvin.addEventListener('click', function (evt) {
+  var toggler = evt.target.closest('input');
+  if (toggler) {
+    preview.classList = 'img-upload__preview';
+    preview.removeAttribute('style');
+    preview.classList.add(marvin.class);
+  }
+});
+
+  effectPhobos.addEventListener('click', function (evt) {
+  var toggler = evt.target.closest('input');
+  if (toggler) {
+    preview.classList = 'img-upload__preview';
+    preview.removeAttribute('style');
+    preview.classList.add(phobos.class);
+  }
+});
+
+
+effectHeat.addEventListener('click', function (evt) {
+  var toggler = evt.target.closest('input');
+  if (toggler) {
+    preview.classList = 'img-upload__preview';
+    preview.removeAttribute('style');
+    preview.classList.add(heat.class);
+  }
+});
+
