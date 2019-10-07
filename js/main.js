@@ -180,6 +180,7 @@ var validateHashtags = function (tags) {
     inputElement.setCustomValidity('нельзя указать больше пяти хэш-тегов;');
     return;
   }
+  return true;
 };
 
 var validate = function (tags) {
