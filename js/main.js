@@ -96,42 +96,29 @@ return number + '%';
 
 
 var resizeBiggerHandler = function () {
-  if (Number.parseInt(resize.value) < RESIZE_MAX) {
-    resize.value = Number.parseInt(resize.value) + RESIZE_STEP + '%';
-    preview.style.transform = 'scale(0.' + Number.parseInt(resize.value) + ')';
-  } else if (Number.parseInt(resize.value) === RESIZE_MAX) {
+  if (Number.parseInt(resize.value, 10) < RESIZE_MAX) {
+    resize.value = Number.parseInt(resize.value, 10) + RESIZE_STEP + '%';
+    preview.style.transform = 'scale(0.' + Number.parseInt(resize.value, 10) + ')';
+  } else if (Number.parseInt(resize.value, 10) === RESIZE_MAX) {
     preview.style.transform = 'none';
   }
 };
 
 var resizeSmallerHandler = function () {
-  if (Number.parseInt(resize.value) > RESIZE_STEP) {
-    resize.value = Number.parseInt(resize.value) - RESIZE_STEP + '%';
-    preview.style.transform = 'scale(0.' + Number.parseInt(resize.value) + ')';
+  if (Number.parseInt(resize.value, 10) > RESIZE_STEP) {
+    resize.value = Number.parseInt(resize.value, 10) - RESIZE_STEP + '%';
+    preview.style.transform = 'scale(0.' + Number.parseInt(resize.value, 10) + ')';
   }
 };
 
 resizeBigger.addEventListener('click', resizeBiggerHandler);
 resizeSmaller.addEventListener('click', resizeSmallerHandler);
 
-//var hashTag = document.querySelector('.text__hashtags');
-//var submitButton = document.querySelector('#upload-submit');
-
-  var PREFERENCES = {
-    HASH: '#',
-    START_POSITION: 0,
-    MAX_QUANTITY: 5,
-    MAX_LENGTH: 20
-  };
-
-
-var Errors = {
-  HASHTAGS_TOO_MANY: 'нельзя указать больше пяти хэш-тегов;',
-  HASHTAG_HAS_NO_HASH: 'хэш-тег начинается с символа # (решётка);',
-  HASHTAG_TOO_LONG: 'максимальная длина одного хэш-тега 20 символов, включая решётку;',
-  HASHTAG_ONLY_HASH: 'хеш-тег не может состоять только из одной решётки;',
-  HASHTAG_USED_TWICE: 'один и тот же хэш-тег не может быть использован дважды;',
-  HASHTAG_SPACE: 'хэш-теги разделяются пробелами;',
+var PREFERENCES = {
+  HASH: '#',
+  START_POSITION: 0,
+  MAX_QUANTITY: 5,
+  MAX_LENGTH: 20
 };
 
 
@@ -139,186 +126,174 @@ var formElement = document.querySelector('#upload-select-image');
 var inputElement = formElement.querySelector('.text__hashtags');
 var buttonElement = formElement.querySelector('#upload-submit');
 
-//console.log(formElement, inputElement, buttonElement);
+// console.log(formElement, inputElement, buttonElement);
 
-function checkDoubleHashtags(hashtags) {
-  for (var i = 0; i < hashtags.length; i++) {
-    var currentHashtag = hashtags[i];
-    for (var j = 0; j < hashtags.length; j++) {
-      if (currentHashtag === hashtags[j] && i !== j) {
+var checkDoubleHashtags = function (tags) {
+  for (var i = 0; i < tags.length; i++) {
+    for (var t = 0; t < tags.length; t++) {
+      if (tags[i] === tags[j] && i !== j) {
         return true;
       }
     }
   }
   return false;
-}
+};
 
-var validateHashtag = function(hashtag) {
-  var isLong = hashtag.length < 2;
+var validateHashtag = function (hashtag) {
+  var isLong = hashtag.length > PREFERENCES.MAX_LENGTH;
   var isNotHashtag = hashtag[0] !== '#';
   var isOnlyHash = hashtag === '#';
-  //var isTooMany = hashtag.length > PREFERENCES.MAX_QUANTITY;
-  var isSpaceUsed = hashtag.indexOf('#', PREFERENCES.START_POSITION) > 0;
-  var isDouble = checkDoubleHashtags(hashtag);
+  var isSpaceUsed = hashtag.indexOf(PREFERENCES.HASH, 1) > 1;
 
   if (isLong) {
-    inputElement.setCustomValidity(Errors.HASHTAG_TOO_LONG);
-    return false;
+    inputElement.setCustomValidity('максимальная длина одного хэш-тега 20 символов, включая решётку;');
+    return;
   }
 
   if (isNotHashtag) {
-    inputElement.setCustomValidity(Errors.HASHTAG_HAS_NO_HASH);
-    return false;
+    inputElement.setCustomValidity('хэш-тег начинается с символа # (решётка);');
+    return;
   }
 
   if (isOnlyHash) {
-    inputElement.setCustomValidity(Errors.HASHTAG_ONLY_HASH);
-    return false;
+    inputElement.setCustomValidity('хеш-тег не может состоять только из одной решётки;');
+    return;
   }
-
-  //if (isTooMany) {
-  //  inputElement.setCustomValidity(Errors.HASHTAGS_TOO_MANY);
-  //  return false;
- //}
 
   if (isSpaceUsed) {
-    inputElement.setCustomValidity(Errors.HASHTAG_SPACE);
-    return false;
+    inputElement.setCustomValidity('хэш-теги разделяются пробелами;');
+    return;
   }
 
+  inputElement.setCustomValidity('');
+};
+
+var validateHashtags = function (tags) {
+  var isDouble = checkDoubleHashtags(tags);
   if (isDouble) {
-    inputElement.setCustomValidity(Errors.HASHTAG_USED_TWICE);
-    return false;
+    inputElement.setCustomValidity('один и тот же хэш-тег не может быть использован дважды;');
+    return;
   }
 
-  return true;
-}
+  var isTooMany = tags.length > PREFERENCES.MAX_QUANTITY;
+  if (isTooMany) {
+    inputElement.setCustomValidity('нельзя указать больше пяти хэш-тегов;');
+    return;
+  }
+};
 
-var handler = function(event) {
-  var hashtags = inputElement.value.toLowerCase().split(' ');
-  if (hashtags.length > PREFERENCES.MAX_QUANTITY) {
-      inputElement.setCustomValidity(Errors.HASHTAGS_TOO_MANY);
-      return false;
-    }
-  validate(hashtags);
-}
-
-var validate = function(hashtags) {
+var validate = function (tags) {
   var result = true;
-
-  for (var i = 0; i < hashtags.length; i++) {
-    var hastag = hashtags[i];
-    result = result && validateHashtag(hastag)
+  result = result && validateHashtags(tags);
+  if (!result) {
+    return;
+  }
+  for (var i = 0; i < tags.length; i++) {
+    var hastag = tags[i];
+    result = result && validateHashtag(hastag);
+    if (!result) {
+      break;
+    }
   }
   if (result) {
     inputElement.setCustomValidity('');
   }
-}
+};
+
+var handler = function () {
+  var hashtags = inputElement.value.split(' ');
+  if (inputElement.value !== '') {
+    validate(hashtags);
+  }
+};
 
 buttonElement.addEventListener('click', handler);
 
-/*
-  var hashTagsInvalidhandler = function (hashtag) {
-    if (hashtag[PREFERENCES.START_POSITION] !== '#') {
-      hashTag.setCustomValidity(Errors.HASHTAG_HAS_NO_HASH);
-      return false;
-    } else if (hashtag.length > PREFERENCES.MAX_LENGTH) {
-      hashTag.setCustomValidity(Errors.HASHTAG_TOO_LONG);
-      return false;
-    } else if (hashtag.length > PREFERENCES.MAX_LENGTH) {
-      hashTag.setCustomValidity('Максимальная длина одного хэш-тега 20 символов, включая решётку');
-      return false;
-    }
-    return true;
-  };
-
-submitButton.addEventListener('submit', hashTagsInvalidhandler(hashTag));*/
-
-
-var pin = document.querySelector('.effect-level__pin');
-var effectList = document.querySelector('.effects__list');
-var preview = document.querySelector('.img-upload__preview');
+// var pin = document.querySelector('.effect-level__pin');
+// var effectList = document.querySelector('.effects__list');
+var imagePreview = document.querySelector('.img-upload__preview');
 var effectChrome = document.querySelector('#effect-chrome');
 var effectSepia = document.querySelector('#effect-sepia');
 var effectMarvin = document.querySelector('#effect-marvin');
 var effectPhobos = document.querySelector('#effect-phobos');
 var effectHeat = document.querySelector('#effect-heat');
+// var toggle = effectList.querySelector('input');
 
-var chrome = {
-      class: 'effects__preview--chrome',
-      css: 'grayscale',
-      max: 1,
-      min: 0
-    }
 
-var sepia = {
-      class: 'effects__preview--sepia',
-      css: 'sepia',
-      max: 1,
-      min: 0
-    }
-var  marvin = {
-      class: 'effects__preview--marvin',
-      css: 'invert',
-      max: 100,
-      min: 0
-    }
-var phobos = {
-      class: 'effects__preview--phobos',
-      css: 'blur',
-      max: 3,
-      min: 0
-    }
-var heat = {
-      class: 'effects__preview--heat',
-      css: 'brightness',
-      max: 3,
-      min: 1
-    }
+var allEffects = {
+  chrome: {
+    element: effectChrome,
+    class: 'effects__preview--chrome'
+  },
 
-  effectChrome.addEventListener('click', function (evt) {
-  var toggler = evt.target.closest('input');
-  if (toggler) {
-    preview.classList = 'img-upload__preview';
-    preview.removeAttribute('style');
-    preview.classList.add(chrome.class);
+  sepia: {
+    element: effectSepia,
+    class: 'effects__preview--sepia'
+  },
+  marvin: {
+    element: effectMarvin,
+    class: 'effects__preview--marvin'
+  },
+  phobos: {
+    element: effectPhobos,
+    class: 'effects__preview--phobos'
+  },
+  heat: {
+    element: effectHeat,
+    class: 'effects__preview--heat'
   }
+};
+/*
+var classReset = function (list) {
+  for (var i = 0; i < list.length; i++) {
+  imagePreview.classList.remove(list[i].class);
+  }
+}
+
+var p = function(object) {
+  var list = Object.values(object);
+  for (var i = 0; i < list.length; i++) {
+    list[i].element.addEventListener('click', function (evt) {
+      classReset(list);
+      imagePreview.classList.add(list[i].class);
+    });
+  }
+}
+
+
+p(allEffects);
+*/
+
+var classReset = function () {
+  imagePreview.classList.remove(allEffects.chrome.class);
+  imagePreview.classList.remove(allEffects.sepia.class);
+  imagePreview.classList.remove(allEffects.marvin.class);
+  imagePreview.classList.remove(allEffects.phobos.class);
+  imagePreview.classList.remove(allEffects.heat.class);
+};
+
+effectChrome.addEventListener('click', function () {
+  classReset();
+  imagePreview.classList.add(allEffects.chrome.class);
 });
 
-  effectSepia.addEventListener('click', function (evt) {
-  var toggler = evt.target.closest('input');
-  if (toggler) {
-    preview.classList = 'img-upload__preview';
-    preview.removeAttribute('style');
-    preview.classList.add(sepia.class);
-  }
+effectSepia.addEventListener('click', function () {
+  classReset();
+  imagePreview.classList.add(allEffects.sepia.class);
 });
 
-  effectMarvin.addEventListener('click', function (evt) {
-  var toggler = evt.target.closest('input');
-  if (toggler) {
-    preview.classList = 'img-upload__preview';
-    preview.removeAttribute('style');
-    preview.classList.add(marvin.class);
-  }
+effectMarvin.addEventListener('click', function () {
+  classReset();
+  imagePreview.classList.add(allEffects.marvin.class);
 });
 
-  effectPhobos.addEventListener('click', function (evt) {
-  var toggler = evt.target.closest('input');
-  if (toggler) {
-    preview.classList = 'img-upload__preview';
-    preview.removeAttribute('style');
-    preview.classList.add(phobos.class);
-  }
+effectPhobos.addEventListener('click', function () {
+  classReset();
+  imagePreview.classList.add(allEffects.phobos.class);
 });
 
-
-effectHeat.addEventListener('click', function (evt) {
-  var toggler = evt.target.closest('input');
-  if (toggler) {
-    preview.classList = 'img-upload__preview';
-    preview.removeAttribute('style');
-    preview.classList.add(heat.class);
-  }
+effectHeat.addEventListener('click', function () {
+  classReset();
+  imagePreview.classList.add(allEffects.heat.class);
 });
 
