@@ -172,13 +172,13 @@ var validateHashtags = function (tags) {
   var isDouble = checkDoubleHashtags(tags);
   if (isDouble) {
     inputElement.setCustomValidity('один и тот же хэш-тег не может быть использован дважды;');
-    return;
+    return false;
   }
 
   var isTooMany = tags.length > PREFERENCES.MAX_QUANTITY;
   if (isTooMany) {
     inputElement.setCustomValidity('нельзя указать больше пяти хэш-тегов;');
-    return;
+    return false;
   }
   return true;
 };
