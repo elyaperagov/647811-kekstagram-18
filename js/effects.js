@@ -29,16 +29,14 @@
       class: 'effects__preview--marvin',
       css: 'invert',
       max: 100,
-      min: 0,
-      postFix: '%'
+      min: 0
     },
     phobos: {
       element: effectPhobos,
       class: 'effects__preview--phobos',
       css: 'blur',
       max: 3,
-      min: 0,
-      postFix: 'px'
+      min: 0
     },
     heat: {
       element: effectHeat,
@@ -51,12 +49,26 @@
 
   var pin = document.querySelector('.effect-level__pin');
   var imagePreview = document.querySelector('.img-upload__preview');
+  var line = document.querySelector('.effect-level__line');
+  var sliderValue = document.querySelector('.effect-level__value');
+
 
   pin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    var startCoords = {
-      x: evt.clientX
+    var startCoords = evt.clientX; // начальная координата
+
+    var moveRange = line.offsetWidth; // ширина линии
+    var getNewOffsetLeft = function (shift) {
+      var newOffsetLeft = (pin.offsetLeft - shift) / moveRange * 100;
+
+      // Если текущее положение ползунка меньше 0 или больше 100 - сбрасываем
+      if (newOffsetLeft < 0) {
+        newOffsetLeft = 0;
+      } else if (newOffsetLeft > 100) {
+        newOffsetLeft = 100;
+      }
+      return newOffsetLeft;
     };
 
     var dragged = false;
@@ -64,17 +76,11 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       dragged = true;
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX
-      };
-
-      startCoords = {
-        x: moveEvt.clientX
-      };
-
-      pin.style.left = (pin.offsetLeft - shift.x) + 'px';
-
+      var shift = startCoords - moveEvt.clientX; // разность координат, на которую сдвинулись
+      startCoords = moveEvt.clientX;
+      var newCoordsX = getNewOffsetLeft(shift); // новая координата по X
+      pin.style.left = newCoordsX + '%';
+      sliderValue.style.width = newCoordsX + '%';
     };
 
     var onMouseUp = function (upEvt) {
@@ -90,12 +96,32 @@
         };
         pin.addEventListener('click', onClickPreventDefault);
       }
-
     };
-
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+  /*
+      var sliderParam = pin.getBoundingClientRect();
+      var sliderParent = line.getBoundingClientRect();
+      var sliderLeft = sliderParam.left - sliderParent.left;
+      //var value = Math.round(sliderLeft * 100 / sliderParent.width);
+      var minX = line.getBoundingClientRect().left;
+      var maxX = line.getBoundingClientRect().left + line.offsetWidth;
+
+      console.log(shift.x);
+      if (shift.x < minX || shift.x > maxX) {
+      //  sliderValue.value = value;
+      //  colorDepth.style.width = value + '%';
+        pin.style.left = (pin.offsetLeft - shift.x) + 'px';
+      }*/
+
+  // var sliderParam = pin.getBoundingClientRect();
+
+  // var minX = line.getBoundingClientRect().left;
+  // var maxX = line.getBoundingClientRect().left + line.offsetWidth;
+
+  //  if (pin.x < minX || pin.x > maxX
+
 
   var effectChrome = document.querySelector('#effect-chrome');
   var effectSepia = document.querySelector('#effect-sepia');
