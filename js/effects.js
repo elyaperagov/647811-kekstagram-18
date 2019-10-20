@@ -5,6 +5,7 @@
   // var setupDialogElement = document.querySelector('.setup');
   // var dialogHandler = setupDialogElement.querySelector('.upload');
 
+
   var allEffects = {
     none: {
       class: 'effects__preview--none'
@@ -55,14 +56,14 @@
   var pin = document.querySelector('.effect-level__pin');
   var imagePreview = document.querySelector('.img-upload__preview');
   var line = document.querySelector('.effect-level__line');
-  var currentEffect;
+  var currentEffect = allEffects.class; // ??????????
   // var levelValue = document.querySelector('.effect-level__value');
 
   var initPin = function (effect) {
-    var data = allEffects[effect];
-    pin.style.left = data.current * 100 + '%';
-    currentEffect = effect;
-  }
+    var data = allEffects[effect]; // data это массив эффектов (chrome, sepia, marvin и т д.) из объекта allEffects
+    pin.style.left = data.current * 100 + '%'; // отмечаем начальное положение ползунка current для каждого эффекта
+    currentEffect = effect; // в currentEffect записываем текущий эффект из массива
+  };
 
   pin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -72,12 +73,7 @@
     var moveRange = line.offsetWidth; // ширина линии
     var getNewOffsetLeft = function (shift) {
       var newOffsetLeft = (pin.offsetLeft - shift) / moveRange * 100;
-      console.log(pin.offsetLeft);
-      console.log(shift);
-      console.log(pin.offsetLeft - shift);
-
-      // Если текущее положение ползунка меньше 0 или больше 100 - сбрасываем до 0 или 100
-      if (newOffsetLeft < 0) {
+      if (newOffsetLeft < 0) { // Если текущее положение ползунка меньше 0 или больше 100 - сбрасываем до 0 или 100
         newOffsetLeft = 0;
       } else if (newOffsetLeft > 100) {
         newOffsetLeft = 100;
@@ -93,12 +89,13 @@
       var shift = startCoords - moveEvt.clientX; // разница координат, на которую сдвинулись
       startCoords = moveEvt.clientX;
       var newCoords = getNewOffsetLeft(shift); // новая координата
-      pin.style.left = newCoords + '%';
-      var currentFilter = allEffects[currentEffect].filter;
-      console.log(currentFilter);
-      imagePreview.style.filter = currentFilter + "("+ newCoords +"%)";
-      allEffects[currentEffect].current = newCoords / 100;
-      console.log('grayscale('+ newCoords + '%)');
+      pin.style.left = newCoords + '%'; // новое положение пина из getNewOffset
+      var currentFilter = allEffects[currentEffect].filter; // записываем текцщий фильтр из массива allEffects
+      // console.log(currentEffect);
+      // console.log(currentFilter);
+      imagePreview.style.filter = currentFilter + '(' + newCoords + '%)'; // применяем новые свойства фильтра исходя из текущего положения пина
+      allEffects[currentEffect].current = newCoords / 100; // запоминаем новое положение пина в процентом обозначении относительно длины линии
+      // console.log('grayscale('+ newCoords + '%)');
     };
 
     var onMouseUp = function (upEvt) {
@@ -179,31 +176,31 @@
 
   effectChrome.addEventListener('click', function () {
     classReset();
-    //imagePreview.classList.add(allEffects.chrome.class);
+    //  imagePreview.classList.add(allEffects.chrome.class);
     initPin('chrome');
   });
 
   effectSepia.addEventListener('click', function () {
     classReset();
-    //imagePreview.classList.add(allEffects.sepia.class);
+    //  imagePreview.classList.add(allEffects.sepia.class);
     initPin('sepia');
   });
 
   effectMarvin.addEventListener('click', function () {
     classReset();
-    //imagePreview.classList.add(allEffects.marvin.class);
+    //  imagePreview.classList.add(allEffects.marvin.class);
     initPin('marvin');
   });
 
   effectPhobos.addEventListener('click', function () {
     classReset();
-    //imagePreview.classList.add(allEffects.phobos.class);
+    //  imagePreview.classList.add(allEffects.phobos.class);
     initPin('phobos');
   });
 
   effectHeat.addEventListener('click', function () {
     classReset();
-   // imagePreview.classList.add(allEffects.heat.class);
+    // imagePreview.classList.add(allEffects.heat.class);
     initPin('heat');
   });
 

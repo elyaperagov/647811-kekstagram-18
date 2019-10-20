@@ -6,13 +6,24 @@
     HASH: '#',
     START_POSITION: 0,
     MAX_QUANTITY: 5,
-    MAX_LENGTH: 20
+    MAX_LENGTH: 20,
+    MAX_COMMENT_LENGTH: 140
   };
 
 
   var formElement = document.querySelector('#upload-select-image');
   var inputElement = formElement.querySelector('.text__hashtags');
   var buttonElement = formElement.querySelector('#upload-submit');
+
+  var textarea = document.querySelector('.text__description');
+
+  var validateComment = function (comment) {
+    if (comment.length > PREFERENCES.MAX_COMMENT_LENGTH) {
+      textarea.setCustomValidity('Длина комментария не может составлять больше 140 символов;');
+      return false;
+    }
+    return true;
+  };
 
   // console.log(formElement, inputElement, buttonElement);
 
@@ -93,6 +104,10 @@
     var hashtags = inputElement.value.split(' ');
     if (inputElement.value !== '') {
       validate(hashtags);
+    }
+    var comments = textarea.value.split('');
+    if (textarea.value !== '') {
+      validateComment(comments);
     }
   };
 
