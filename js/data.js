@@ -37,6 +37,7 @@
 
   // ОТКРЫВАНИЕ И ЗАКРЫВАНИЕ БОЛЬШОЙ КАРТИНКИ
   var bigPic = document.querySelector('.big-picture');
+  var bigPicSocial = bigPic.querySelector('.big-picture__social');
 
   var showItem = function (item) {
     return item.classList.remove('hidden');
@@ -49,6 +50,7 @@
   var showBigPhoto = function (data) {
     showItem(bigPic);
     bigPic.querySelector('.big-picture__img').querySelector('img').src = data.url;
+    // bigPicSocial.querySelector('.social__likes').querySelector('likes-count').textContent = image.likes;
   };
 
   var closeBigPhoto = function () {
@@ -57,7 +59,22 @@
 
   var closeButton = bigPic.querySelector('#picture-cancel');
 
+  var socialComments = document.querySelector('.social__comments');
 
+  var renderComments = function (comments, number) {
+    socialComments.innerHTML = '';
+    for (var i = 0; i < number; i++) {
+      socialComments.innerHTML +=
+      '<li class="social__comment">'
+      + '<img class="social__picture" src="img/avatar-' + getRandomNumber(1, 6) + '.svg"'
+      + 'alt="Аватар комментария"'
+      + 'width="35" height="35">'
+      + '<p class="social__text">' + comments.message + '</p>'
+      + '</li>';
+    }
+  };
+
+  var counter = 5;
   // ШАБЛОН
   function renderTemplate(image) {
     var userImage = template.cloneNode(true);
@@ -68,8 +85,14 @@
     userImage.querySelector('.picture__comments').textContent = image.messages;
     userImage.addEventListener('click', function () {
       showBigPhoto(image);
+
+      bigPicSocial.querySelector('.social__likes').querySelector('.likes-count').textContent = image.likes;
+      bigPicSocial.querySelector('.social__comment-count').querySelector('.comments-count').textContent = image.messages;
+      bigPicSocial.querySelector('.social__caption').textContent = image.description;
+      bigPicSocial.querySelector('.social__comment').querySelector('.social__text').textContent = image.comments.message;
       closeButton.addEventListener('click', function () {
         closeBigPhoto(image);
+        renderComments(image, counter);
       });
     });
 
@@ -81,7 +104,7 @@
     for (var i = 0; i < array.length; i++) {
       fragment.appendChild(renderTemplate(array[i]));
     }
-    return fragment;
+    pictures.appendChild(fragment);
   }
   /*
   var onDataLoad = function (data) {
@@ -93,7 +116,7 @@
 */
 
   // СООБЩЕНИЕ ОБ ОШИБКЕ
-  /*  var errorHandler = function (errorMessage) {
+  var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
     node.style.position = 'absolute';
@@ -103,9 +126,9 @@
 
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
-  };*/
+  };
 
-  //  window.backend.load(getImage, errorHandler);
+  window.backend.load(getImage, errorHandler);
 
   window.data = {
     getImage: getImage,
