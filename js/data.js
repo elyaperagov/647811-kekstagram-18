@@ -60,21 +60,8 @@
   var closeButton = bigPic.querySelector('#picture-cancel');
 
   var socialComments = document.querySelector('.social__comments');
+  var commentsLoader = document.querySelector('.comments-loader');
 
-  var renderComments = function (comments, number) {
-    socialComments.innerHTML = '';
-    for (var i = 0; i < number; i++) {
-      socialComments.innerHTML +=
-      '<li class="social__comment">'
-      + '<img class="social__picture" src="img/avatar-' + getRandomNumber(1, 6) + '.svg"'
-      + 'alt="Аватар комментария"'
-      + 'width="35" height="35">'
-      + '<p class="social__text">' + comments.message + '</p>'
-      + '</li>';
-    }
-  };
-
-  var counter = 5;
   // ШАБЛОН
   function renderTemplate(image) {
     var userImage = template.cloneNode(true);
@@ -90,9 +77,30 @@
       bigPicSocial.querySelector('.social__comment-count').querySelector('.comments-count').textContent = image.messages;
       bigPicSocial.querySelector('.social__caption').textContent = image.description;
       bigPicSocial.querySelector('.social__comment').querySelector('.social__text').textContent = image.comments.message;
+      bigPicSocial.querySelector('.comments-count').textContent = image.comments.length;
       closeButton.addEventListener('click', function () {
         closeBigPhoto(image);
-        renderComments(image, counter);
+        var renderComments = function (comments, number) {
+          socialComments.innerHTML = '';
+          for (var i = 0; i <= comments.length; i++) {
+            socialComments.innerHTML +=
+            '<li class="social__comment">'
+            + '<img class="social__picture" src="img/avatar-' + getRandomNumber(1, 6) + '.svg"'
+            + 'alt="Аватар комментария"'
+            + 'width="35" height="35">'
+            + '<p class="social__text">' + comments[i].message + '</p>'
+            + '</li>';
+          }
+
+          if (number > comments.length) {
+            commentsLoader.classList.add('visually-hidden');
+          } else {
+            commentsLoader.classList.remove('visually-hidden');
+          }
+        };
+        var commentsNumber = 5;
+
+        renderComments(image.comments, commentsNumber);
       });
     });
 
