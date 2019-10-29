@@ -110,7 +110,13 @@
         var commentsNumber = 5;
 
         renderComments(image.comments, commentsNumber);
+
+        commentsLoader.addEventListener('click', function () {
+        commentsNumber += 1;
+        renderComments(image.comments, commentsNumber);
       });
+      });
+
     });
 
     return userImage;

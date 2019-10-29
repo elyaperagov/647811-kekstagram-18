@@ -4,7 +4,11 @@
 
   // var setupDialogElement = document.querySelector('.setup');
   // var dialogHandler = setupDialogElement.querySelector('.upload');
-
+  var effectChrome = document.querySelector('#effect-chrome');
+  var effectSepia = document.querySelector('#effect-sepia');
+  var effectMarvin = document.querySelector('#effect-marvin');
+  var effectPhobos = document.querySelector('#effect-phobos');
+  var effectHeat = document.querySelector('#effect-heat');
 
   var allEffects = {
     none: {
@@ -52,6 +56,9 @@
       min: 1
     }
   };
+
+  console.log(effectPhobos);
+  console.log(allEffects);
 
   var pin = document.querySelector('.effect-level__pin');
   var imagePreview = document.querySelector('.img-upload__preview');
@@ -136,13 +143,6 @@
   // var maxX = line.getBoundingClientRect().left + line.offsetWidth;
 
   //  if (pin.x < minX || pin.x > maxX
-
-
-  var effectChrome = document.querySelector('#effect-chrome');
-  var effectSepia = document.querySelector('#effect-sepia');
-  var effectMarvin = document.querySelector('#effect-marvin');
-  var effectPhobos = document.querySelector('#effect-phobos');
-  var effectHeat = document.querySelector('#effect-heat');
   // var toggle = effectList.querySelector('input');
 
   /*
@@ -166,6 +166,38 @@
   p(allEffects);
   */
 
+  var classReset = function (elements) {
+    //var list = Object.values(elements);
+    for (var i = 0; i < list.length; i++) {
+    imagePreview.classList.remove(list[i].class);
+    }
+  }
+
+  var effectsHandler = function(object) {
+    var list = Object.entries(object);
+    for (var i = 0; i < list.length; i++) {
+      list[i].element.addEventListener('click', function (evt) {
+        classReset(list);
+        imagePreview.classList.add(list[i].class);
+      });
+    }
+  }
+
+  effectsHandler(allEffects);
+/*
+  var effectList = document.querySelector('.effects__list');
+
+  effectList.addEventListener('click', function (evt) {
+    var toggler = evt.target.closest('input');
+    if (toggler) {
+      imagePreview.classList = 'img-upload__preview';
+      imagePreview.removeAttribute('style');
+      imagePreview.classList.add(allEffects[toggler.value].class);
+    }
+  });
+
+  console.log(Object.entries(allEffects));
+
   var classReset = function () {
     imagePreview.classList.remove(allEffects.chrome.class);
     imagePreview.classList.remove(allEffects.sepia.class);
@@ -174,35 +206,37 @@
     imagePreview.classList.remove(allEffects.heat.class);
   };
 
+console.log(Object.values(allEffects));*/
+/*
   effectChrome.addEventListener('click', function () {
-    classReset();
-    //  imagePreview.classList.add(allEffects.chrome.class);
+    classReset(allEffects);  // classReset(allEffects); ?????
+    imagePreview.classList.add(allEffects.chrome.class);
     initPin('chrome');
   });
 
   effectSepia.addEventListener('click', function () {
-    classReset();
-    //  imagePreview.classList.add(allEffects.sepia.class);
+    classReset(allEffects);
+    imagePreview.classList.add(allEffects.sepia.class);
     initPin('sepia');
   });
 
   effectMarvin.addEventListener('click', function () {
-    classReset();
-    //  imagePreview.classList.add(allEffects.marvin.class);
+    classReset(allEffects);
+    imagePreview.classList.add(allEffects.marvin.class);
     initPin('marvin');
   });
 
   effectPhobos.addEventListener('click', function () {
-    classReset();
-    //  imagePreview.classList.add(allEffects.phobos.class);
+    classReset(allEffects);
+    imagePreview.classList.add(allEffects.phobos.class);
     initPin('phobos');
   });
 
   effectHeat.addEventListener('click', function () {
-    classReset();
-    // imagePreview.classList.add(allEffects.heat.class);
+    classReset(allEffects);
+    imagePreview.classList.add(allEffects.heat.class);
     initPin('heat');
-  });
+  });*/
 
 
 })();
