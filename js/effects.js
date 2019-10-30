@@ -57,9 +57,6 @@
     }
   };
 
-  console.log(effectPhobos);
-  console.log(allEffects);
-
   var pin = document.querySelector('.effect-level__pin');
   var imagePreview = document.querySelector('.img-upload__preview');
   var line = document.querySelector('.effect-level__line');
@@ -151,31 +148,19 @@
     imagePreview.classList.remove(list[i].class);
     }
   }
-
-  var p = function(object) {
-    var list = Object.values(object);
-    for (var i = 0; i < list.length; i++) {
-      list[i].element.addEventListener('click', function (evt) {
-        classReset(list);
-        imagePreview.classList.add(list[i].class);
-      });
-    }
-  }
-
-
-  p(allEffects);
   */
 
   var classReset = function (elements) {
-    //var list = Object.values(elements);
+    var list = Object.values(elements);
     for (var i = 0; i < list.length; i++) {
-    imagePreview.classList.remove(list[i].class);
+      imagePreview.classList.remove(list[i].class);
     }
-  }
-
+  };
+  /*
   var effectsHandler = function(object) {
-    var list = Object.entries(object);
+    var list = Object.values(object);
     for (var i = 0; i < list.length; i++) {
+      console.log(list.element[i]);
       list[i].element.addEventListener('click', function (evt) {
         classReset(list);
         imagePreview.classList.add(list[i].class);
@@ -183,8 +168,8 @@
     }
   }
 
-  effectsHandler(allEffects);
-/*
+  effectsHandler(allEffects);*/
+  /*
   var effectList = document.querySelector('.effects__list');
 
   effectList.addEventListener('click', function (evt) {
@@ -207,9 +192,9 @@
   };
 
 console.log(Object.values(allEffects));*/
-/*
+
   effectChrome.addEventListener('click', function () {
-    classReset(allEffects);  // classReset(allEffects); ?????
+    classReset(allEffects);// classReset(allEffects); ?????
     imagePreview.classList.add(allEffects.chrome.class);
     initPin('chrome');
   });
@@ -236,7 +221,7 @@ console.log(Object.values(allEffects));*/
     classReset(allEffects);
     imagePreview.classList.add(allEffects.heat.class);
     initPin('heat');
-  });*/
+  });
 
 
 })();

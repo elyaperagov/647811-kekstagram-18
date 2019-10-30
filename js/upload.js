@@ -26,7 +26,7 @@
   var closePreview = document.querySelector('.img-upload__cancel');
 
   closePreview.addEventListener('click', function () {
-    window.data.hideItem(filtersWindow);
+    window.helpers.hideItem(filtersWindow);
   });
 
   /*
