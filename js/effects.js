@@ -4,6 +4,7 @@
 
   // var setupDialogElement = document.querySelector('.setup');
   // var dialogHandler = setupDialogElement.querySelector('.upload');
+  // var effectNone = document.querySelector('#effect-none');
   var effectChrome = document.querySelector('#effect-chrome');
   var effectSepia = document.querySelector('#effect-sepia');
   var effectMarvin = document.querySelector('#effect-marvin');
@@ -11,9 +12,11 @@
   var effectHeat = document.querySelector('#effect-heat');
 
   var allEffects = {
-    none: {
-      class: 'effects__preview--none'
-    },
+    //none: {
+    //  element: effectNone,
+    //  class: 'effects__preview--none',
+    //  filter: 'none',
+    //},
     chrome: {
       element: effectChrome,
       class: 'effects__preview--chrome',
@@ -156,11 +159,11 @@
       imagePreview.classList.remove(list[i].class);
     }
   };
-  /*
+
   var effectsHandler = function(object) {
     var list = Object.values(object);
     for (var i = 0; i < list.length; i++) {
-      console.log(list.element[i]);
+      console.log(list[i].class);
       list[i].element.addEventListener('click', function (evt) {
         classReset(list);
         imagePreview.classList.add(list[i].class);
@@ -168,7 +171,7 @@
     }
   }
 
-  effectsHandler(allEffects);*/
+  effectsHandler(allEffects);
   /*
   var effectList = document.querySelector('.effects__list');
 
@@ -192,7 +195,7 @@
   };
 
 console.log(Object.values(allEffects));*/
-
+  /*
   effectChrome.addEventListener('click', function () {
     classReset(allEffects);// classReset(allEffects); ?????
     imagePreview.classList.add(allEffects.chrome.class);
@@ -222,6 +225,6 @@ console.log(Object.values(allEffects));*/
     imagePreview.classList.add(allEffects.heat.class);
     initPin('heat');
   });
-
+*/
 
 })();
