@@ -4,7 +4,7 @@
 
   // var setupDialogElement = document.querySelector('.setup');
   // var dialogHandler = setupDialogElement.querySelector('.upload');
-  // var effectNone = document.querySelector('#effect-none');
+  var effectNone = document.querySelector('#effect-none');
   var effectChrome = document.querySelector('#effect-chrome');
   var effectSepia = document.querySelector('#effect-sepia');
   var effectMarvin = document.querySelector('#effect-marvin');
@@ -12,11 +12,11 @@
   var effectHeat = document.querySelector('#effect-heat');
 
   var allEffects = {
-    //none: {
-    //  element: effectNone,
-    //  class: 'effects__preview--none',
-    //  filter: 'none',
-    //},
+    none: {
+      element: effectNone,
+      class: 'effects__preview--none',
+      filter: 'none',
+    },
     chrome: {
       element: effectChrome,
       class: 'effects__preview--chrome',
@@ -67,8 +67,8 @@
   // var levelValue = document.querySelector('.effect-level__value');
 
   var initPin = function (effect) {
-    var data = allEffects[effect]; // data это массив эффектов (chrome, sepia, marvin и т д.) из объекта allEffects
-    pin.style.left = data.current * 100 + '%'; // отмечаем начальное положение ползунка current для каждого эффекта
+    //  var data = allEffects[effect]; // data это массив эффектов (chrome, sepia, marvin и т д.) из объекта allEffects
+    pin.style.left = effect.current * 100 + '%'; // отмечаем начальное положение ползунка current для каждого эффекта
     currentEffect = effect; // в currentEffect записываем текущий эффект из массива
   };
 
@@ -97,11 +97,11 @@
       startCoords = moveEvt.clientX;
       var newCoords = getNewOffsetLeft(shift); // новая координата
       pin.style.left = newCoords + '%'; // новое положение пина из getNewOffset
-      var currentFilter = allEffects[currentEffect].filter; // записываем текцщий фильтр из массива allEffects
+      var currentFilter = currentEffect.filter; // записываем текцщий фильтр из массива allEffects
       // console.log(currentEffect);
       // console.log(currentFilter);
       imagePreview.style.filter = currentFilter + '(' + newCoords + '%)'; // применяем новые свойства фильтра исходя из текущего положения пина
-      allEffects[currentEffect].current = newCoords / 100; // запоминаем новое положение пина в процентом обозначении относительно длины линии
+      currentEffect.current = newCoords / 100; // запоминаем новое положение пина в процентом обозначении относительно длины линии
       // console.log('grayscale('+ newCoords + '%)');
     };
 
@@ -145,37 +145,33 @@
   //  if (pin.x < minX || pin.x > maxX
   // var toggle = effectList.querySelector('input');
 
-  /*
-  var classReset = function (list) {
-    for (var i = 0; i < list.length; i++) {
-    imagePreview.classList.remove(list[i].class);
-    }
-  }
-  */
-
   var classReset = function (elements) {
     var list = Object.values(elements);
     for (var i = 0; i < list.length; i++) {
       imagePreview.classList.remove(list[i].class);
     }
   };
-/*
-  var effectsHandler = function(object) {
+
+  var effectsHandler = function (object) {
     var list = Object.values(object);
     for (var i = 0; i < list.length; i++) {
       if (list[i] && list[i].element && list[i].class) {
-        console.log(list[i].class);
-      list[i].element.addEventListener('click', function (evt) {
-        classReset(list);
-        imagePreview.classList.add(list[i].class);
-      });
+        list[i].element.addEventListener('click', callBack(i, list));
+      }
     }
-  }
-}
+  };
+
+  var callBack = function (i, list) {
+    return function () {
+      classReset(list);
+      initPin(list[i]);
+      imagePreview.classList.add(list[i].class);
+    };
+  };
 
   effectsHandler(allEffects);
 
-
+  /*
   var classReset = function () {
     imagePreview.classList.remove(allEffects.chrome.class);
     imagePreview.classList.remove(allEffects.sepia.class);
@@ -184,7 +180,7 @@
     imagePreview.classList.remove(allEffects.heat.class);
   };
 */
-
+/*
   effectChrome.addEventListener('click', function () {
     classReset(allEffects);// classReset(allEffects); ?????
     imagePreview.classList.add(allEffects.chrome.class);
@@ -214,5 +210,5 @@
     imagePreview.classList.add(allEffects.heat.class);
     initPin('heat');
   });
-
+*/
 })();

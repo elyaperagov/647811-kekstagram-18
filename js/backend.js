@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/kekstagram/data';
-  //  var URL_SEND = 'https://js.dump.academy/kekstagram';
 
   var load = function (URL, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
