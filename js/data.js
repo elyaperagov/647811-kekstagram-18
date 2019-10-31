@@ -151,7 +151,9 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.backend.load(getImage, errorHandler);
+  var URL = 'https://js.dump.academy/kekstagram/data';
+
+  window.backend.load(URL, getImage, errorHandler);
 
 })();
 

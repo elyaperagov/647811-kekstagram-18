@@ -159,32 +159,22 @@
       imagePreview.classList.remove(list[i].class);
     }
   };
-
+/*
   var effectsHandler = function(object) {
     var list = Object.values(object);
     for (var i = 0; i < list.length; i++) {
-      console.log(list[i].class);
+      if (list[i] && list[i].element && list[i].class) {
+        console.log(list[i].class);
       list[i].element.addEventListener('click', function (evt) {
         classReset(list);
         imagePreview.classList.add(list[i].class);
       });
     }
   }
+}
 
   effectsHandler(allEffects);
-  /*
-  var effectList = document.querySelector('.effects__list');
 
-  effectList.addEventListener('click', function (evt) {
-    var toggler = evt.target.closest('input');
-    if (toggler) {
-      imagePreview.classList = 'img-upload__preview';
-      imagePreview.removeAttribute('style');
-      imagePreview.classList.add(allEffects[toggler.value].class);
-    }
-  });
-
-  console.log(Object.entries(allEffects));
 
   var classReset = function () {
     imagePreview.classList.remove(allEffects.chrome.class);
@@ -193,9 +183,8 @@
     imagePreview.classList.remove(allEffects.phobos.class);
     imagePreview.classList.remove(allEffects.heat.class);
   };
+*/
 
-console.log(Object.values(allEffects));*/
-  /*
   effectChrome.addEventListener('click', function () {
     classReset(allEffects);// classReset(allEffects); ?????
     imagePreview.classList.add(allEffects.chrome.class);
@@ -225,6 +214,5 @@ console.log(Object.values(allEffects));*/
     imagePreview.classList.add(allEffects.heat.class);
     initPin('heat');
   });
-*/
 
 })();

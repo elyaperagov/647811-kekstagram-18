@@ -4,7 +4,7 @@
   var URL = 'https://js.dump.academy/kekstagram/data';
   //  var URL_SEND = 'https://js.dump.academy/kekstagram';
 
-  var load = function (onSuccess, onError) {
+  var load = function (URL, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
