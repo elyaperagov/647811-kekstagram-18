@@ -5,9 +5,8 @@
   // ЗАГРУЗКА ИЗОБРАЖЕНИЯ
 
   var upload = document.querySelector('#upload-file');
-
+  var filtersWindow = document.querySelector('.img-upload__overlay');
   var uploadShow = function () {
-    var filtersWindow = document.querySelector('.img-upload__overlay');
     filtersWindow.classList.remove('hidden');
   };
 
@@ -21,6 +20,14 @@
   var resizeSmaller = document.querySelector('.scale__control--smaller');
   var resizeBigger = document.querySelector('.scale__control--bigger');
   var preview = document.querySelector('.img-upload__preview');
+
+
+  //  ЗАКРЫТИЕ ФОРМЫ РЕДАКТИРОВАНИЯ
+  var closePreview = document.querySelector('.img-upload__cancel');
+
+  closePreview.addEventListener('click', function () {
+    window.helpers.hideItem(filtersWindow);
+  });
 
   /*
   function formatToPercent(number) {
