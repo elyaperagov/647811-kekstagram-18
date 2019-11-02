@@ -132,14 +132,6 @@
     }
     pictures.appendChild(fragment);
   };
-  /*
-  var onDataLoad = function (data) {
-    images = data;
-    getImage(images);
-  };
-
-  window.backend.onRequestLoad(onDataLoad, window.backend.onErrorRequest);
-*/
 
   // СООБЩЕНИЕ ОБ ОШИБКЕ
   var errorHandler = function (errorMessage) {
