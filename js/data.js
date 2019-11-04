@@ -146,14 +146,17 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
+  var URL = 'https://js.dump.academy/kekstagram/data';
+
   window.backend.load(URL, getImage, errorHandler);
 
 
   // ОТПРАВКА ФОРМЫ С ФОТО
   var form = document.querySelector('.img-upload__form');
+  var main = document.querySelector('main');
 
-  form.addEventListener('submit', function (formEvt) {
-    formEvt.preventDefault();
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
 
     window.backend.sendForm(new FormData(form), function () {
       window.helpers.hideItem(form);
@@ -162,15 +165,12 @@
   });
 
   var openSuccess = function () {
-    var successTemplate = document.querySelector('#success')
-      .content;
+    var successTemplate = document.querySelector('#success').content;
 
-    var successPopup = successTemplate.cloneNode(true).lastElementChild;
-    var main = document.querySelector('main');
+    var successPopup = successTemplate.cloneNode(true);
+    var successButton = document.querySelector('.success__button');
 
     main.appendChild(successPopup);
-
-    var successButton = document.querySelector('.success__button');
 
     var closeSuccess = function () {
       main.removeChild(successPopup);
@@ -185,23 +185,13 @@
         closeSuccess();
       }
     };
-
-    document.addEventListener('keydown', EscSuccessHandler);
-
-    successPopup.addEventListener('click', function (evt) {
-      if (evt.target === successPopup) {
-        closeSuccess();
-      }
-    });
   };
 
   var openError = function () {
     window.helpers.hideItem(form);
-    var errorTemplate = document.querySelector('#error')
-      .content;
+    var errorTemplate = document.querySelector('#error').content;
 
-    var errorPopup = errorTemplate.cloneNode(true).lastElementChild;
-    var main = document.querySelector('main');
+    var errorPopup = errorTemplate.cloneNode(true);
 
     main.appendChild(errorPopup);
 
@@ -218,11 +208,6 @@
 
     document.addEventListener('keydown', EscErrorHandler);
 
-    errorPopup.addEventListener('click', function (evt) {
-      if (evt.target === errorPopup || evt.target.matches('.error__button')) {
-        closeError();
-      }
-    });
   };
 
 })();
