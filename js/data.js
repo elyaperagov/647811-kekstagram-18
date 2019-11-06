@@ -132,14 +132,6 @@
     }
     pictures.appendChild(fragment);
   };
-  /*
-  var onDataLoad = function (data) {
-    images = data;
-    getImage(images);
-  };
-
-  window.backend.onRequestLoad(onDataLoad, window.backend.onErrorRequest);
-*/
 
   // СООБЩЕНИЕ ОБ ОШИБКЕ
   var errorHandler = function (errorMessage) {
@@ -157,6 +149,89 @@
   var URL = 'https://js.dump.academy/kekstagram/data';
 
   window.backend.load(URL, getImage, errorHandler);
+
+
+  // ОТПРАВКА ФОРМЫ С ФОТО
+  var form = document.querySelector('.img-upload__form');
+  var main = document.querySelector('main');
+
+  var sendFormCallback = function () {
+    window.helpers.hideItem(form);
+    openSuccess();
+  };
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    window.backend.sendForm(new FormData(form), sendFormCallback, openError);
+  });
+
+  // function removeElement(elem) {
+  // var elem = document.getElementById(id);
+  // return elem.parentNode.removeChild(elem);
+  // }
+
+  var openSuccess = function () {
+    var successTemplate = document.querySelector('#success').content;
+    var successPopup = successTemplate.cloneNode(true).firstElementChild;
+    // console.log(successPopup);
+    // console.log(successTemplate);
+    // var element = document.getElementsByClassName('success');
+
+    main.appendChild(successPopup);
+
+    var successButton = document.querySelector('.success__button');
+    // почему при объявлении до main.appendChild(successPopup); возникает ошибка
+
+    var closeSuccess = function () {
+      main.removeChild(successPopup);
+      // successPopup.innerHTML = '';
+      successButton.removeEventListener('click', closeSuccess);
+      document.removeEventListener('keydown', EscSuccessHandler);
+    };
+
+    successButton.addEventListener('click', closeSuccess);
+
+    var EscSuccessHandler = function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        closeSuccess();
+      }
+    };
+  };
+
+  var openError = function () {
+    window.helpers.hideItem(form);
+    var errorTemplate = document.querySelector('#error').content;
+
+    var errorPopup = errorTemplate.cloneNode(true);
+    // console.log(errorPopup);
+
+    // console.log(main.querySelector('#error'));
+    main.appendChild(errorPopup);
+
+    var errorButton = document.querySelector('.error__button');
+
+    // var element = document.getElementsByClassName('error');
+    // console.log(element);
+
+    var closeError = function () {
+      // removeElement(errorPopup);
+      // element.main.removeChild(element);
+      errorButton.removeEventListener('click', closeError);
+      document.removeEventListener('keydown', EscErrorHandler);
+    };
+
+    errorButton.addEventListener('click', closeError);
+
+    var EscErrorHandler = function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        closeError();
+      }
+    };
+
+    document.addEventListener('keydown', EscErrorHandler);
+
+  };
 
 })();
 
