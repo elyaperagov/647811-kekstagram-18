@@ -173,8 +173,10 @@
 
   var openSuccess = function () {
     var successTemplate = document.querySelector('#success').content;
-    var successPopup = successTemplate.cloneNode(true);
-    var element = document.getElementsByClassName('success');
+    var successPopup = successTemplate.cloneNode(true).firstElementChild;
+    // console.log(successPopup);
+    // console.log(successTemplate);
+    // var element = document.getElementsByClassName('success');
 
     main.appendChild(successPopup);
 
@@ -182,7 +184,7 @@
     // почему при объявлении до main.appendChild(successPopup); возникает ошибка
 
     var closeSuccess = function () {
-      main.removeChild(element);
+      main.removeChild(successPopup);
       // successPopup.innerHTML = '';
       successButton.removeEventListener('click', closeSuccess);
       document.removeEventListener('keydown', EscSuccessHandler);
