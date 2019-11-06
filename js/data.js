@@ -155,25 +155,35 @@
   var form = document.querySelector('.img-upload__form');
   var main = document.querySelector('main');
 
+  var sendFormCallback = function () {
+    window.helpers.hideItem(form);
+    openSuccess();
+  };
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    window.backend.sendForm(new FormData(form), function () {
-      window.helpers.hideItem(form);
-      openSuccess();
-    }, openError);
+    window.backend.sendForm(new FormData(form), sendFormCallback, openError);
   });
+
+  // function removeElement(elem) {
+  // var elem = document.getElementById(id);
+  // return elem.parentNode.removeChild(elem);
+  // }
 
   var openSuccess = function () {
     var successTemplate = document.querySelector('#success').content;
-
     var successPopup = successTemplate.cloneNode(true);
-    var successButton = document.querySelector('.success__button');
+    var element = document.getElementsByClassName('success');
 
     main.appendChild(successPopup);
 
+    var successButton = document.querySelector('.success__button');
+    // почему при объявлении до main.appendChild(successPopup); возникает ошибка
+
     var closeSuccess = function () {
-      main.removeChild(successPopup);
+      main.removeChild(element);
+      // successPopup.innerHTML = '';
       successButton.removeEventListener('click', closeSuccess);
       document.removeEventListener('keydown', EscSuccessHandler);
     };
@@ -192,13 +202,24 @@
     var errorTemplate = document.querySelector('#error').content;
 
     var errorPopup = errorTemplate.cloneNode(true);
+    // console.log(errorPopup);
 
+    // console.log(main.querySelector('#error'));
     main.appendChild(errorPopup);
 
+    var errorButton = document.querySelector('.error__button');
+
+    // var element = document.getElementsByClassName('error');
+    // console.log(element);
+
     var closeError = function () {
-      main.removeChild(errorPopup);
+      // removeElement(errorPopup);
+      // element.main.removeChild(element);
+      errorButton.removeEventListener('click', closeError);
       document.removeEventListener('keydown', EscErrorHandler);
     };
+
+    errorButton.addEventListener('click', closeError);
 
     var EscErrorHandler = function (evt) {
       if (evt.keyCode === ESC_KEYCODE) {
