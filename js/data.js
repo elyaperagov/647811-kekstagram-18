@@ -64,7 +64,6 @@
     for (var i = 0; i <= comments.length && i < number; i++) {
       var li = document.createElement('li');
       li.classList = 'social__comment ';
-
       var img = document.createElement('img');
       img.classList = 'social__picture';
       img.src = 'img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg';
@@ -78,6 +77,16 @@
       li.appendChild(paragraph);
       socialComments.appendChild(li);
     }
+    /*
+    for (var i = 0; i < comments.length; i++) {
+        socialComments.innerHTML +=
+        '<li class="social__comment">'
+        + '<img class="social__picture" src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg';
+        + 'alt="Аватар комментатора фото"'
+        + 'width="35" height="35">'
+        + '<p class="social__text">' + comments[i].message + '</p>'
+        + '</li>';
+      }*/
 
     if (number > comments.length) {
       commentsLoader.classList.add('visually-hidden');
