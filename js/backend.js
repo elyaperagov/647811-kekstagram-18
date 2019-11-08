@@ -30,7 +30,7 @@
 
   var sendForm = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
-    var URL_SEND = 'https://js.dump.academy/kekstagram';
+    var URL_SEND = 'https://js.dump.academy/kekstagram.';
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {

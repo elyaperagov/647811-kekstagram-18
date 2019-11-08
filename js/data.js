@@ -78,15 +78,17 @@
       socialComments.appendChild(li);
     }
     /*
-    for (var i = 0; i < comments.length; i++) {
-        socialComments.innerHTML +=
-        '<li class="social__comment">'
-        + '<img class="social__picture" src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg';
-        + 'alt="Аватар комментатора фото"'
-        + 'width="35" height="35">'
+      for (var i = 0; i < comments.length; i++) {
+      socialComments.innerHTML +=
+      '<li class="social__comment">' +
+         '<img class="social__picture"' +
+            'src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg'
+          + 'alt="Автор комментария"'
+         +  'width="35" height="35">'
         + '<p class="social__text">' + comments[i].message + '</p>'
-        + '</li>';
-      }*/
+    + '</li>';
+    console.log(socialComments);
+    }*/
 
     if (number > comments.length) {
       commentsLoader.classList.add('visually-hidden');
@@ -175,17 +177,9 @@
     window.backend.sendForm(new FormData(form), sendFormCallback, openError);
   });
 
-  // function removeElement(elem) {
-  // var elem = document.getElementById(id);
-  // return elem.parentNode.removeChild(elem);
-  // }
-
   var openSuccess = function () {
     var successTemplate = document.querySelector('#success').content;
-    var successPopup = successTemplate.cloneNode(true).firstElementChild;
-    // console.log(successPopup);
-    // console.log(successTemplate);
-    // var element = document.getElementsByClassName('success');
+    var successPopup = successTemplate.cloneNode(true).querySelector('.success');
 
     main.appendChild(successPopup);
 
@@ -194,7 +188,6 @@
 
     var closeSuccessHandler = function () {
       main.removeChild(successPopup);
-      // successPopup.innerHTML = '';
       successButton.removeEventListener('click', closeSuccessHandler);
       document.removeEventListener('keydown', escSuccessHandler);
     };
@@ -206,26 +199,28 @@
         closeSuccessHandler();
       }
     };
+
+    document.addEventListener('keydown', escSuccessHandler);
+
+    document.addEventListener('click', function (evt) {
+      if (evt.target === successPopup) {
+        closeSuccessHandler();
+      }
+    });
   };
 
   var openError = function () {
     window.helpers.hideItem(form);
     var errorTemplate = document.querySelector('#error').content;
 
-    var errorPopup = errorTemplate.cloneNode(true);
-    // console.log(errorPopup);
+    var errorPopup = errorTemplate.cloneNode(true).querySelector('.error');
 
-    // console.log(main.querySelector('#error'));
     main.appendChild(errorPopup);
 
     var errorButton = document.querySelector('.error__button');
 
-    // var element = document.getElementsByClassName('error');
-    // console.log(element);
-
     var closeErrorHandler = function () {
-      // removeElement(errorPopup);
-      // element.main.removeChild(element);
+      main.removeChild(errorPopup);
       errorButton.removeEventListener('click', closeErrorHandler);
       document.removeEventListener('keydown', escErrorHandler);
     };
@@ -239,6 +234,12 @@
     };
 
     document.addEventListener('keydown', escErrorHandler);
+
+    document.addEventListener('click', function (evt) {
+      if (evt.target === errorPopup) {
+        closeErrorHandler();
+      }
+    });
 
   };
 
