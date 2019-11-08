@@ -64,7 +64,6 @@
     for (var i = 0; i <= comments.length && i < number; i++) {
       var li = document.createElement('li');
       li.classList = 'social__comment ';
-
       var img = document.createElement('img');
       img.classList = 'social__picture';
       img.src = 'img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg';
@@ -78,6 +77,16 @@
       li.appendChild(paragraph);
       socialComments.appendChild(li);
     }
+    /*
+    for (var i = 0; i < comments.length; i++) {
+        socialComments.innerHTML +=
+        '<li class="social__comment">'
+        + '<img class="social__picture" src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg';
+        + 'alt="Аватар комментатора фото"'
+        + 'width="35" height="35">'
+        + '<p class="social__text">' + comments[i].message + '</p>'
+        + '</li>';
+      }*/
 
     if (number > comments.length) {
       commentsLoader.classList.add('visually-hidden');
@@ -113,7 +122,7 @@
       renderComments(image.comments, commentsNumber);
 
       commentsLoader.addEventListener('click', function () {
-        commentsNumber += 1;
+        commentsNumber += 5;
         renderComments(image.comments, commentsNumber);
       });
     });
@@ -183,18 +192,18 @@
     var successButton = document.querySelector('.success__button');
     // почему при объявлении до main.appendChild(successPopup); возникает ошибка
 
-    var closeSuccess = function () {
+    var closeSuccessHandler = function () {
       main.removeChild(successPopup);
       // successPopup.innerHTML = '';
-      successButton.removeEventListener('click', closeSuccess);
-      document.removeEventListener('keydown', EscSuccessHandler);
+      successButton.removeEventListener('click', closeSuccessHandler);
+      document.removeEventListener('keydown', escSuccessHandler);
     };
 
-    successButton.addEventListener('click', closeSuccess);
+    successButton.addEventListener('click', closeSuccessHandler);
 
-    var EscSuccessHandler = function (evt) {
+    var escSuccessHandler = function (evt) {
       if (evt.keyCode === ESC_KEYCODE) {
-        closeSuccess();
+        closeSuccessHandler();
       }
     };
   };
@@ -214,22 +223,22 @@
     // var element = document.getElementsByClassName('error');
     // console.log(element);
 
-    var closeError = function () {
+    var closeErrorHandler = function () {
       // removeElement(errorPopup);
       // element.main.removeChild(element);
-      errorButton.removeEventListener('click', closeError);
-      document.removeEventListener('keydown', EscErrorHandler);
+      errorButton.removeEventListener('click', closeErrorHandler);
+      document.removeEventListener('keydown', escErrorHandler);
     };
 
-    errorButton.addEventListener('click', closeError);
+    errorButton.addEventListener('click', closeErrorHandler);
 
-    var EscErrorHandler = function (evt) {
+    var escErrorHandler = function (evt) {
       if (evt.keyCode === ESC_KEYCODE) {
-        closeError();
+        closeErrorHandler();
       }
     };
 
-    document.addEventListener('keydown', EscErrorHandler);
+    document.addEventListener('keydown', escErrorHandler);
 
   };
 
