@@ -3,7 +3,7 @@
 (function () {
 
   // window.pictures.appendChild(window.data.getImage(window.images));
-/*
+  /*
   var bigPicture = document.querySelector('.big-picture');
   var openBigPictures = document.querySelectorAll('.picture__img');
   var closeBigPictures = bigPicture.querySelectorAll('.big-picture__cancel');
@@ -25,5 +25,6 @@
     });
   }
 
-*/
+  */
+
 })();
