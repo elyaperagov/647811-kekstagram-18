@@ -138,10 +138,50 @@
 
   var getImage = function (array) {
     var fragment = document.createDocumentFragment();
+    var filters = document.querySelector('.img-filters');
     for (var i = 0; i < array.length; i++) {
       fragment.appendChild(renderTemplate(array[i]));
     }
     pictures.appendChild(fragment);
+    filters.classList.remove('img-filters--inactive');
+  };
+
+  // СОРТИРОВКА
+
+  var successHandler = function (data) {
+    var photos = data;
+    getImage(photos);
+
+    var popularPhotosHandler = window.debounce(function (evt) {
+      removePictures();
+      removeFilter();
+      getImage(photos);
+      evt.target.classList.add('img-filters__button--active');
+    });
+
+    var randomPhotosHandler = window.debounce(function (evt) {
+      removePictures();
+      removeFilter();
+      var uniquePhotos =
+        photos.filter(function (it, i) {
+          return photos.indexOf(it) === i;
+        });
+      window.debounce(getImage(sortRandomPhotos(uniquePhotos)));
+      evt.target.classList.add('img-filters__button--active');
+    });
+
+    var discussedPhotosHandler = window.debounce(function (evt) {
+      removePictures();
+      removeFilter();
+      window.debounce(getImage(sortByComments(photos)));
+      evt.target.classList.add('img-filters__button--active');
+      // console.log(sortByComments(photos));
+    });
+
+    popular.addEventListener('click', popularPhotosHandler);
+    discussed.addEventListener('click', discussedPhotosHandler);
+    random.addEventListener('click', randomPhotosHandler);
+
   };
 
   // СООБЩЕНИЕ ОБ ОШИБКЕ
@@ -159,7 +199,7 @@
 
   var URL = 'https://js.dump.academy/kekstagram/data';
 
-  window.backend.load(URL, getImage, errorHandler);
+  window.backend.load(URL, successHandler, errorHandler);
 
 
   // ОТПРАВКА ФОРМЫ С ФОТО
@@ -241,6 +281,43 @@
       }
     });
 
+  };
+
+  // СОРТИРОВКА
+
+  var popular = document.querySelector('#filter-popular');
+  var discussed = document.querySelector('#filter-discussed');
+  var random = document.querySelector('#filter-random');
+
+  var removePictures = function () {
+    var photo = pictures.querySelectorAll('.picture');
+    photo.forEach(function (item) {
+      pictures.removeChild(item);
+    });
+  };
+
+  var removeFilter = function () {
+    var filters = document.querySelector('.img-filters');
+    var filterButtons = filters.querySelectorAll('.img-filters__button');
+    filterButtons.forEach(function (button) {
+      if (button.classList.contains('img-filters__button--active')) {
+        button.classList.remove('img-filters__button--active');
+      }
+    });
+  };
+
+  var sortByComments = function (arr) {
+    return arr.slice().sort(function (a, b) {
+      return b.comments.length - a.comments.length;
+    });
+  };
+
+  var sortRandom = function () {
+    return Math.random() - 0.5;
+  };
+
+  var sortRandomPhotos = function (arr) {
+    return arr.slice(0, 10).sort(sortRandom);
   };
 
 })();
