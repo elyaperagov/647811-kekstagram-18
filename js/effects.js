@@ -64,7 +64,7 @@
   var imagePreview = document.querySelector('.img-upload__preview');
   var line = document.querySelector('.effect-level__line');
   var currentEffect = allEffects.class; // ??????????
-  // var levelValue = document.querySelector('.effect-level__value');
+  var levelValue = document.querySelector('.effect-level');
 
   var initPin = function (effect) {
     //  var data = allEffects[effect]; // data это массив эффектов (chrome, sepia, marvin и т д.) из объекта allEffects
@@ -161,8 +161,23 @@
     }
   };
 
+  var removeLine = function (i, list) {
+    if (list[i].class === 'effects__preview--none') {
+      levelValue.classList.add('hidden');
+    } else {
+      levelValue.classList.remove('hidden');
+    }
+  };
+  /*
+    var p = document.querySelector('#effect-none');
+    p.addEventListener('click', function () {
+      window.helpers.hideItem(levelValue);
+      })*/
+
+
   var callBack = function (i, list) {
     return function () {
+      removeLine(i, list);
       classReset(list);
       initPin(list[i]);
       imagePreview.classList.add(list[i].class);
@@ -170,6 +185,10 @@
   };
 
   effectsHandler(allEffects);
+
+  window.effects = {
+    levelValue: levelValue
+  };
 
   /*
   var classReset = function () {
