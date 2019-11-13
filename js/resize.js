@@ -35,11 +35,11 @@
   return number + '%';
   }*/
 
-
   var resizeBiggerHandler = function () {
     if (Number.parseInt(resize.value, 10) < RESIZE_MAX) {
-      resize.value = Number.parseInt(resize.value, 10) + RESIZE_STEP + '%';
-      preview.style.transform = 'scale(0.' + Number.parseInt(resize.value, 10) + ')';
+      var p = Number.parseInt(resize.value, 10) + RESIZE_STEP;
+      resize.value = p + '%';
+      preview.style.transform = 'scale(' + p / 100 + ')';
     } else if (Number.parseInt(resize.value, 10) === RESIZE_MAX) {
       preview.style.transform = 'none';
     }

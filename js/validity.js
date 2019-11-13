@@ -17,9 +17,14 @@
 
   var textarea = document.querySelector('.text__description');
 
+  var colorChange = function (element) {
+    element.style = 'border-color: red; border-width: 5px;';
+  };
+
   var validateComment = function (comment) {
     if (comment.length > PREFERENCES.MAX_COMMENT_LENGTH) {
       textarea.setCustomValidity('Длина комментария не может составлять больше 140 символов;');
+      colorChange(textarea);
       return false;
     }
     return true;
@@ -46,25 +51,26 @@
 
     if (isLong) {
       inputElement.setCustomValidity('максимальная длина одного хэш-тега 20 символов, включая решётку;');
-      return;
+      return false;
     }
 
     if (isNotHashtag) {
       inputElement.setCustomValidity('хэш-тег начинается с символа # (решётка);');
-      return;
+      return false;
     }
 
     if (isOnlyHash) {
       inputElement.setCustomValidity('хеш-тег не может состоять только из одной решётки;');
-      return;
+      return false;
     }
 
     if (isSpaceUsed) {
       inputElement.setCustomValidity('хэш-теги разделяются пробелами;');
-      return;
+      return false;
     }
 
     inputElement.setCustomValidity('');
+    return true;
   };
 
   var validateHashtags = function (tags) {
@@ -85,23 +91,27 @@
   var validate = function (tags) {
     var result = true;
     result = result && validateHashtags(tags);
-    if (!result) {
-      return;
-    }
+    // if (!result) {
+    // colorChange(inputElement);
+    //  return;
+    // }
     for (var i = 0; i < tags.length; i++) {
       var hastag = tags[i];
       result = result && validateHashtag(hastag);
       if (!result) {
+        // colorChange(inputElement);
         break;
       }
     }
     if (result) {
       inputElement.setCustomValidity('');
+    } else {
+      colorChange(inputElement);
     }
   };
 
   var handler = function () {
-    var hashtags = inputElement.value.split(' ');
+    var hashtags = inputElement.value.toLowerCase().split(' ');
     if (inputElement.value !== '') {
       validate(hashtags);
     }

@@ -103,7 +103,11 @@
       // console.log(currentEffect);
       // console.log(currentFilter);
       colorDepth.style.width = newCoords + '%';
-      imagePreview.style.filter = currentFilter + '(' + newCoords + '%)'; // применяем новые свойства фильтра исходя из текущего положения пина
+      if (currentFilter === 'blur') {
+        imagePreview.style.filter = currentFilter + '(' + Math.floor(newCoords / 33) + 'px)';
+      } else {
+        imagePreview.style.filter = currentFilter + '(' + newCoords + '%)';
+      } // применяем новые свойства фильтра исходя из текущего положения пина
       currentEffect.current = newCoords / 100; // запоминаем новое положение пина в процентом обозначении относительно длины линии
       // console.log('grayscale('+ newCoords + '%)');
     };
@@ -139,19 +143,6 @@
       //  colorDepth.style.width = value + '%';
         pin.style.left = (pin.offsetLeft - shift.x) + 'px';
       }
-
-
-      if (currentFilter.value === 'blur' && pin.style.left === 0) {
-        imagePreview.style.filter = 'blur(0)';
-      } else if (pin.style.left > 0 && pin.style.left <= 33.33) {
-        imagePreview.style.filter = 'blur(1px)';
-      } else if (pin.style.left > 33.33 && pin.style.left <= 66.66) {
-        imagePreview.style.filter = 'blur(2px)';
-      } else if (pin.style.left > 66.66 && pin.style.left <= 100) {
-        imagePreview.style.filter = 'blur(3px)';
-      }
-
-      console.log(pin.style.left);
 
       */
 
