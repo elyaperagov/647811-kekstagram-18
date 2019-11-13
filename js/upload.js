@@ -8,7 +8,7 @@
   var filtersWindow = document.querySelector('.img-upload__overlay');
   var uploadShow = function () {
     filtersWindow.classList.remove('hidden');
-    window.helpers.hideItem(window.effects.levelValue);
+    window.helpers.hideItem(window.effects.effectLevel);
   };
 
   upload.addEventListener('change', uploadShow);

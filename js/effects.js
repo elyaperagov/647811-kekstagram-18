@@ -56,7 +56,7 @@
       filter: 'brightness',
       max: 3,
       current: 0.6,
-      min: 1
+      min: 0
     }
   };
 
@@ -64,11 +64,13 @@
   var imagePreview = document.querySelector('.img-upload__preview');
   var line = document.querySelector('.effect-level__line');
   var currentEffect = allEffects.class; // ??????????
-  var levelValue = document.querySelector('.effect-level');
+  var effectLevel = document.querySelector('.effect-level');
+  var colorDepth = document.querySelector('.effect-level__depth');
 
   var initPin = function (effect) {
     //  var data = allEffects[effect]; // data это массив эффектов (chrome, sepia, marvin и т д.) из объекта allEffects
     pin.style.left = effect.current * 100 + '%'; // отмечаем начальное положение ползунка current для каждого эффекта
+    colorDepth.style.width = pin.style.left;
     currentEffect = effect; // в currentEffect записываем текущий эффект из массива
   };
 
@@ -100,6 +102,7 @@
       var currentFilter = currentEffect.filter; // записываем текцщий фильтр из массива allEffects
       // console.log(currentEffect);
       // console.log(currentFilter);
+      colorDepth.style.width = newCoords + '%';
       imagePreview.style.filter = currentFilter + '(' + newCoords + '%)'; // применяем новые свойства фильтра исходя из текущего положения пина
       currentEffect.current = newCoords / 100; // запоминаем новое положение пина в процентом обозначении относительно длины линии
       // console.log('grayscale('+ newCoords + '%)');
@@ -135,7 +138,22 @@
       //  sliderValue.value = value;
       //  colorDepth.style.width = value + '%';
         pin.style.left = (pin.offsetLeft - shift.x) + 'px';
-      }*/
+      }
+
+
+      if (currentFilter.value === 'blur' && pin.style.left === 0) {
+        imagePreview.style.filter = 'blur(0)';
+      } else if (pin.style.left > 0 && pin.style.left <= 33.33) {
+        imagePreview.style.filter = 'blur(1px)';
+      } else if (pin.style.left > 33.33 && pin.style.left <= 66.66) {
+        imagePreview.style.filter = 'blur(2px)';
+      } else if (pin.style.left > 66.66 && pin.style.left <= 100) {
+        imagePreview.style.filter = 'blur(3px)';
+      }
+
+      console.log(pin.style.left);
+
+      */
 
   // var sliderParam = pin.getBoundingClientRect();
 
@@ -149,6 +167,7 @@
     var list = Object.values(elements);
     for (var i = 0; i < list.length; i++) {
       imagePreview.classList.remove(list[i].class);
+      imagePreview.removeAttribute('style');
     }
   };
 
@@ -163,17 +182,11 @@
 
   var removeLine = function (i, list) {
     if (list[i].class === 'effects__preview--none') {
-      levelValue.classList.add('hidden');
+      effectLevel.classList.add('hidden');
     } else {
-      levelValue.classList.remove('hidden');
+      effectLevel.classList.remove('hidden');
     }
   };
-  /*
-    var p = document.querySelector('#effect-none');
-    p.addEventListener('click', function () {
-      window.helpers.hideItem(levelValue);
-      })*/
-
 
   var callBack = function (i, list) {
     return function () {
@@ -187,7 +200,7 @@
   effectsHandler(allEffects);
 
   window.effects = {
-    levelValue: levelValue
+    effectLevel: effectLevel
   };
 
   /*
