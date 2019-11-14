@@ -6,7 +6,6 @@
   window.pictures = pictures;
   var template = document.querySelector('#picture').content.querySelector('.picture');
   var ESC_KEYCODE = 27;
-  // var ENTER_KEYCODE = 13;
   var bigPic = document.querySelector('.big-picture');
   var bigPicSocial = bigPic.querySelector('.big-picture__social');
 
@@ -76,7 +75,6 @@
       bigPicSocial.querySelector('.social__likes').querySelector('.likes-count').textContent = image.likes;
       bigPicSocial.querySelector('.social__comment-count').querySelector('.comments-count').textContent = image.messages;
       bigPicSocial.querySelector('.social__caption').textContent = image.description;
-      // bigPicSocial.querySelector('.social__comment').querySelector('.social__text').textContent = image.messages;
       bigPicSocial.querySelector('.comments-count').textContent = image.comments.length;
 
       var commentsNumber = 5;
