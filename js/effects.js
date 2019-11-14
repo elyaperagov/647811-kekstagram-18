@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-
-  // var setupDialogElement = document.querySelector('.setup');
-  // var dialogHandler = setupDialogElement.querySelector('.upload');
   var effectNone = document.querySelector('#effect-none');
   var effectChrome = document.querySelector('#effect-chrome');
   var effectSepia = document.querySelector('#effect-sepia');
@@ -22,7 +19,7 @@
       class: 'effects__preview--chrome',
       filter: 'grayscale',
       max: 1,
-      current: 0.5,
+      current: 1,
       min: 0
     },
 
@@ -31,7 +28,7 @@
       class: 'effects__preview--sepia',
       filter: 'sepia',
       max: 1,
-      current: 0.3,
+      current: 1,
       min: 0
     },
     marvin: {
@@ -39,7 +36,7 @@
       class: 'effects__preview--marvin',
       filter: 'invert',
       max: 100,
-      current: 0.2,
+      current: 1,
       min: 0
     },
     phobos: {
@@ -47,7 +44,7 @@
       class: 'effects__preview--phobos',
       filter: 'blur',
       max: 3,
-      current: 0.1,
+      current: 1,
       min: 0
     },
     heat: {
@@ -55,20 +52,21 @@
       class: 'effects__preview--heat',
       filter: 'brightness',
       max: 3,
-      current: 0.6,
-      min: 1
+      current: 1,
+      min: 0
     }
   };
 
   var pin = document.querySelector('.effect-level__pin');
   var imagePreview = document.querySelector('.img-upload__preview');
   var line = document.querySelector('.effect-level__line');
-  var currentEffect = allEffects.class; // ??????????
-  var levelValue = document.querySelector('.effect-level');
+  var currentEffect;
+  var effectLevel = document.querySelector('.effect-level');
+  var colorDepth = document.querySelector('.effect-level__depth');
 
   var initPin = function (effect) {
-    //  var data = allEffects[effect]; // data это массив эффектов (chrome, sepia, marvin и т д.) из объекта allEffects
-    pin.style.left = effect.current * 100 + '%'; // отмечаем начальное положение ползунка current для каждого эффекта
+    pin.style.left = effect.current * 100 + '%'; // начальное положение ползунка current для каждого эффекта
+    colorDepth.style.width = pin.style.left;
     currentEffect = effect; // в currentEffect записываем текущий эффект из массива
   };
 
@@ -80,7 +78,7 @@
     var moveRange = line.offsetWidth; // ширина линии
     var getNewOffsetLeft = function (shift) {
       var newOffsetLeft = (pin.offsetLeft - shift) / moveRange * 100;
-      if (newOffsetLeft < 0) { // Если текущее положение ползунка меньше 0 или больше 100 - сбрасываем до 0 или 100
+      if (newOffsetLeft < 0) { // Если текущее положение ползунка меньше 0 или больше 100, то ставим 0 или 100
         newOffsetLeft = 0;
       } else if (newOffsetLeft > 100) {
         newOffsetLeft = 100;
@@ -98,11 +96,13 @@
       var newCoords = getNewOffsetLeft(shift); // новая координата
       pin.style.left = newCoords + '%'; // новое положение пина из getNewOffset
       var currentFilter = currentEffect.filter; // записываем текцщий фильтр из массива allEffects
-      // console.log(currentEffect);
-      // console.log(currentFilter);
-      imagePreview.style.filter = currentFilter + '(' + newCoords + '%)'; // применяем новые свойства фильтра исходя из текущего положения пина
-      currentEffect.current = newCoords / 100; // запоминаем новое положение пина в процентом обозначении относительно длины линии
-      // console.log('grayscale('+ newCoords + '%)');
+      colorDepth.style.width = newCoords + '%'; // применяем новые свойства фильтра исходя из текущего положения пина
+      if (currentFilter === 'blur') {
+        imagePreview.style.filter = currentFilter + '(' + Math.floor(newCoords / 33) + 'px)';
+      } else {
+        imagePreview.style.filter = currentFilter + '(' + newCoords + '%)';
+      }
+      currentEffect.current = newCoords / 100; // запоминаем новое положение пина в процентом соотношении относительно длины линии
     };
 
     var onMouseUp = function (upEvt) {
@@ -122,33 +122,12 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
-  /*
-      var sliderParam = pin.getBoundingClientRect();
-      var sliderParent = line.getBoundingClientRect();
-      var sliderLeft = sliderParam.left - sliderParent.left;
-      //var value = Math.round(sliderLeft * 100 / sliderParent.width);
-      var minX = line.getBoundingClientRect().left;
-      var maxX = line.getBoundingClientRect().left + line.offsetWidth;
-
-      console.log(shift.x);
-      if (shift.x < minX || shift.x > maxX) {
-      //  sliderValue.value = value;
-      //  colorDepth.style.width = value + '%';
-        pin.style.left = (pin.offsetLeft - shift.x) + 'px';
-      }*/
-
-  // var sliderParam = pin.getBoundingClientRect();
-
-  // var minX = line.getBoundingClientRect().left;
-  // var maxX = line.getBoundingClientRect().left + line.offsetWidth;
-
-  //  if (pin.x < minX || pin.x > maxX
-  // var toggle = effectList.querySelector('input');
 
   var classReset = function (elements) {
     var list = Object.values(elements);
     for (var i = 0; i < list.length; i++) {
       imagePreview.classList.remove(list[i].class);
+      imagePreview.removeAttribute('style');
     }
   };
 
@@ -163,17 +142,11 @@
 
   var removeLine = function (i, list) {
     if (list[i].class === 'effects__preview--none') {
-      levelValue.classList.add('hidden');
+      effectLevel.classList.add('hidden');
     } else {
-      levelValue.classList.remove('hidden');
+      effectLevel.classList.remove('hidden');
     }
   };
-  /*
-    var p = document.querySelector('#effect-none');
-    p.addEventListener('click', function () {
-      window.helpers.hideItem(levelValue);
-      })*/
-
 
   var callBack = function (i, list) {
     return function () {
@@ -187,47 +160,7 @@
   effectsHandler(allEffects);
 
   window.effects = {
-    levelValue: levelValue
+    effectLevel: effectLevel
   };
 
-  /*
-  var classReset = function () {
-    imagePreview.classList.remove(allEffects.chrome.class);
-    imagePreview.classList.remove(allEffects.sepia.class);
-    imagePreview.classList.remove(allEffects.marvin.class);
-    imagePreview.classList.remove(allEffects.phobos.class);
-    imagePreview.classList.remove(allEffects.heat.class);
-  };
-*/
-/*
-  effectChrome.addEventListener('click', function () {
-    classReset(allEffects);// classReset(allEffects); ?????
-    imagePreview.classList.add(allEffects.chrome.class);
-    initPin('chrome');
-  });
-
-  effectSepia.addEventListener('click', function () {
-    classReset(allEffects);
-    imagePreview.classList.add(allEffects.sepia.class);
-    initPin('sepia');
-  });
-
-  effectMarvin.addEventListener('click', function () {
-    classReset(allEffects);
-    imagePreview.classList.add(allEffects.marvin.class);
-    initPin('marvin');
-  });
-
-  effectPhobos.addEventListener('click', function () {
-    classReset(allEffects);
-    imagePreview.classList.add(allEffects.phobos.class);
-    initPin('phobos');
-  });
-
-  effectHeat.addEventListener('click', function () {
-    classReset(allEffects);
-    imagePreview.classList.add(allEffects.heat.class);
-    initPin('heat');
-  });
-*/
 })();
