@@ -35,15 +35,21 @@
   // ОТРИСОВКА БЛОКА С КОММЕНТАРИЯМИ
   var renderComments = function (comments, number) {
     socialComments.innerHTML = '';
-
     for (var i = 0; i < comments.length && i < number; i++) {
-      socialComments.innerHTML +=
-      '<li class="social__comment">'
-      + '<img class="social__picture" src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg"'
-      + 'alt="Аватар комментатора фото"'
-      + 'width="35" height="35">'
-      + '<p class="social__text">' + comments[i].message + '</p>'
-      + '</li>';
+      var li = document.createElement('li');
+      li.classList = 'social__comment ';
+      var img = document.createElement('img');
+      img.classList = 'social__picture';
+      img.src = 'img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg';
+      img.width = '35';
+      img.height = '35';
+      img.alt = 'Аватар комментатора фотографии';
+      var paragraph = document.createElement('p');
+      paragraph.classList = 'social__text';
+      paragraph.textContent = comments[i].message;
+      li.appendChild(img);
+      li.appendChild(paragraph);
+      socialComments.appendChild(li);
     }
 
     if (number > comments.length) {
