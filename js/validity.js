@@ -14,7 +14,6 @@
   var formElement = document.querySelector('#upload-select-image');
   var inputElement = formElement.querySelector('.text__hashtags');
   var buttonElement = formElement.querySelector('#upload-submit');
-
   var textarea = document.querySelector('.text__description');
 
   var colorChange = function (element) {
@@ -29,8 +28,6 @@
     }
     return true;
   };
-
-  // console.log(formElement, inputElement, buttonElement);
 
   var checkDoubleHashtags = function (tags) {
     for (var i = 0; i < tags.length; i++) {
@@ -91,15 +88,10 @@
   var validate = function (tags) {
     var result = true;
     result = result && validateHashtags(tags);
-    // if (!result) {
-    // colorChange(inputElement);
-    //  return;
-    // }
     for (var i = 0; i < tags.length; i++) {
       var hastag = tags[i];
       result = result && validateHashtag(hastag);
       if (!result) {
-        // colorChange(inputElement);
         break;
       }
     }
@@ -123,5 +115,9 @@
 
   buttonElement.addEventListener('click', handler);
 
+  window.validity = {
+    inputElement: inputElement,
+    textarea: textarea
+  };
 
 })();
