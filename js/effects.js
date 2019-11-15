@@ -131,7 +131,7 @@
     }
   };
 
-  var effectsHandler = function (object) {
+  var effectsChange = function (object) {
     var list = Object.values(object);
     for (var i = 0; i < list.length; i++) {
       if (list[i] && list[i].element && list[i].class) {
@@ -157,7 +157,7 @@
     };
   };
 
-  effectsHandler(allEffects);
+  effectsChange(allEffects);
 
   window.effects = {
     effectLevel: effectLevel
