@@ -29,10 +29,11 @@
     return true;
   };
 
+
   var checkDoubleHashtags = function (tags) {
     for (var i = 0; i < tags.length; i++) {
-      for (var t = 0; t < tags.length; t++) {
-        if (tags[i] === tags[t] && i !== t) {
+      for (var j = 0; j < tags.length; j++) {
+        if (tags[i] === tags[j] && i !== j) {
           return true;
         }
       }

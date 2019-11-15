@@ -218,7 +218,7 @@
   };
 
   var openError = function () {
-    window.helpers.hideItem(form);
+    window.helpers.hideItem(formOverlay);
     var errorTemplate = document.querySelector('#error').content;
 
     var errorPopup = errorTemplate.cloneNode(true).querySelector('.error');

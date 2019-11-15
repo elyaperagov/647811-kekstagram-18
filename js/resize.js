@@ -44,9 +44,9 @@
 
   var resizeBiggerHandler = function () {
     if (Number.parseInt(resize.value, 10) < RESIZE_MAX) {
-      var p = Number.parseInt(resize.value, 10) + RESIZE_STEP;
-      resize.value = p + '%';
-      preview.style.transform = 'scale(' + p / 100 + ')';
+      var valueControl = Number.parseInt(resize.value, 10) + RESIZE_STEP;
+      resize.value = valueControl + '%';
+      preview.style.transform = 'scale(' + valueControl / 100 + ')';
     } else if (Number.parseInt(resize.value, 10) === RESIZE_MAX) {
       preview.style.transform = 'none';
     }
