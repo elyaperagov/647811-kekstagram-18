@@ -169,10 +169,13 @@
 
   // ОТПРАВКА ФОРМЫ С ФОТО
   var form = document.querySelector('.img-upload__form');
+  var formOverlay = document.querySelector('.img-upload__overlay');
   var main = document.querySelector('main');
+  var body = document.querySelector('body');
 
   var sendFormCallback = function () {
-    window.helpers.hideItem(form);
+    window.helpers.hideItem(formOverlay);
+    main.classList.add('modal-open');
     openSuccess();
   };
 
@@ -186,14 +189,15 @@
     var successTemplate = document.querySelector('#success').content;
     var successPopup = successTemplate.cloneNode(true).querySelector('.success');
 
-    main.appendChild(successPopup);
+    body.appendChild(successPopup);
 
     var successButton = document.querySelector('.success__button');
 
     var closeSuccessHandler = function () {
-      main.removeChild(successPopup);
-      successButton.removeEventListener('click', closeSuccessHandler);
+      body.removeChild(successPopup);
+      successPopup.removeEventListener('click', closeSuccessHandler);
       document.removeEventListener('keydown', escSuccessHandler);
+      main.classList.remove('modal-open');
     };
 
     successButton.addEventListener('click', closeSuccessHandler);
