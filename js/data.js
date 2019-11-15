@@ -35,15 +35,21 @@
   // ОТРИСОВКА БЛОКА С КОММЕНТАРИЯМИ
   var renderComments = function (comments, number) {
     socialComments.innerHTML = '';
-
     for (var i = 0; i < comments.length && i < number; i++) {
-      socialComments.innerHTML +=
-      '<li class="social__comment">'
-      + '<img class="social__picture" src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg"'
-      + 'alt="Аватар комментатора фото"'
-      + 'width="35" height="35">'
-      + '<p class="social__text">' + comments[i].message + '</p>'
-      + '</li>';
+      var li = document.createElement('li');
+      li.classList = 'social__comment ';
+      var img = document.createElement('img');
+      img.classList = 'social__picture';
+      img.src = comments[i].avatar;
+      img.width = '35';
+      img.height = '35';
+      img.alt = comments[i].name;
+      var paragraph = document.createElement('p');
+      paragraph.classList = 'social__text';
+      paragraph.textContent = comments[i].message;
+      li.appendChild(img);
+      li.appendChild(paragraph);
+      socialComments.appendChild(li);
     }
 
     if (number > comments.length) {
@@ -63,14 +69,13 @@
 
     userImage.querySelector('.picture__img').src = image.url;
     userImage.querySelector('.picture__likes').textContent = image.likes;
-    userImage.querySelector('.picture__comments').textContent = image.messages;
+    userImage.querySelector('.picture__comments').textContent = image.comments.length;
     userImage.addEventListener('click', function () {
       window.fullsize.showBigPhoto(image);
 
       bigPicSocial.querySelector('.social__likes').querySelector('.likes-count').textContent = image.likes;
       bigPicSocial.querySelector('.social__comment-count').querySelector('.comments-count').textContent = image.messages;
       bigPicSocial.querySelector('.social__caption').textContent = image.description;
-      // bigPicSocial.querySelector('.social__comment').querySelector('.social__text').textContent = image.messages;
       bigPicSocial.querySelector('.comments-count').textContent = image.comments.length;
 
       var commentsNumber = 5;
@@ -106,36 +111,43 @@
     var photos = data;
     getImage(photos);
 
-    var popularPhotosHandler = window.debounce(function (evt) {
+    var popularPhotosHandler = function (evt) {
       window.sort.removePictures();
       window.sort.removeFilter();
       getImage(photos);
       evt.target.classList.add('img-filters__button--active');
-    });
+    };
 
-    var randomPhotosHandler = window.debounce(function (evt) {
+    var randomPhotosHandler = function (evt) {
       window.sort.removePictures();
       window.sort.removeFilter();
       var uniquePhotos =
         photos.filter(function (it, i) {
           return photos.indexOf(it) === i;
         });
-      window.debounce(getImage(window.helpers.sortRandomPhotos(uniquePhotos)));
+      getImage(window.helpers.sortRandomPhotos(uniquePhotos));
       evt.target.classList.add('img-filters__button--active');
-    });
+    };
 
-    var discussedPhotosHandler = window.debounce(function (evt) {
+    var discussedPhotosHandler = function (evt) {
       window.sort.removePictures();
       window.sort.removeFilter();
-      window.debounce(getImage(window.helpers.sortByComments(photos)));
+      getImage(window.helpers.sortByComments(photos));
       evt.target.classList.add('img-filters__button--active');
-    });
+    };
 
-    window.sort.popular.addEventListener('click', popularPhotosHandler);
-    window.sort.discussed.addEventListener('click', discussedPhotosHandler);
-    window.sort.random.addEventListener('click', randomPhotosHandler);
+    window.sort.popular.addEventListener('click', window.debounce(function (evt) {
+      popularPhotosHandler(evt);
+    }));
+    window.sort.discussed.addEventListener('click', window.debounce(function (evt) {
+      discussedPhotosHandler(evt);
+    }));
+    window.sort.random.addEventListener('click', window.debounce(function (evt) {
+      randomPhotosHandler(evt);
+    }));
 
   };
+
 
   // СООБЩЕНИЕ ОБ ОШИБКЕ
   var errorHandler = function (errorMessage) {
