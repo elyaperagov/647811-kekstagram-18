@@ -2,8 +2,6 @@
 
 (function () {
 
-  // ЗАГРУЗКА ИЗОБРАЖЕНИЯ
-
   var upload = document.querySelector('#upload-file');
   var filtersWindow = document.querySelector('.img-upload__overlay');
   var closePreview = document.querySelector('.img-upload__cancel');
@@ -28,8 +26,6 @@
   document.addEventListener('keydown', uploadCloseHandler);
   upload.addEventListener('change', uploadShow);
 
-  // ФОРМА РЕДАКТИРОВАНИЯ
-
   var RESIZE_STEP = 25;
   var RESIZE_MAX = 100;
   var resize = document.querySelector('.scale__control--value');
@@ -37,10 +33,6 @@
   var resizeBigger = document.querySelector('.scale__control--bigger');
   var preview = document.querySelector('.img-upload__preview');
 
-  /*
-  function formatToPercent(number) {
-  return number + '%';
-  }*/
 
   var resizeBiggerHandler = function () {
     if (Number.parseInt(resize.value, 10) < RESIZE_MAX) {

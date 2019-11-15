@@ -2,33 +2,32 @@
 
 (function () {
 
+  var ESC_KEYCODE = 27;
+
+  var Likes = {
+    MINIMUM: 15,
+    MAXIMUM: 200
+  };
+
+
+  var Messages = {
+    MINIMUM: 1,
+    MAXIMUM: 20
+  };
+
   var pictures = document.querySelector('.pictures');
   window.pictures = pictures;
   var template = document.querySelector('#picture').content.querySelector('.picture');
-  var ESC_KEYCODE = 27;
-  // var ENTER_KEYCODE = 13;
   var bigPic = document.querySelector('.big-picture');
   var bigPicSocial = bigPic.querySelector('.big-picture__social');
-
-
-  var likes = {
-    minimum: 15,
-    maximum: 200
-  };
-
-
-  var messages = {
-    minimum: 1,
-    maximum: 20
-  };
 
   var images = [];
   window.images = images;
   for (var imageNumber = 1; imageNumber <= 25; imageNumber++) {
     images.push({
       url: 'photos/' + imageNumber + '.jpg',
-      likes: window.helpers.getRandomNumber(likes.minimum, likes.maximum),
-      messages: window.helpers.getRandomNumber(messages.minimum, messages.maximum)
+      likes: window.helpers.getRandomNumber(Likes.MINIMUM, Likes.MAXIMUM),
+      messages: window.helpers.getRandomNumber(Messages.MINIMUM, Messages.MAXIMUM)
     });
   }
 
