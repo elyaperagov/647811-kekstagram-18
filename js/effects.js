@@ -53,7 +53,7 @@
       filter: 'brightness',
       max: 3,
       current: 1,
-      min: 0
+      min: 1
     }
   };
 
@@ -98,10 +98,13 @@
       var currentFilter = currentEffect.filter; // записываем текцщий фильтр из массива allEffects
       colorDepth.style.width = newCoords + '%'; // применяем новые свойства фильтра исходя из текущего положения пина
       if (currentFilter === 'blur') {
-        imagePreview.style.filter = currentFilter + '(' + Math.floor(newCoords / 33) + 'px)';
+        imagePreview.style.filter = currentFilter + '(' + Math.floor(3 / 100 * newCoords) + 'px)';
+      } else if (currentFilter === 'brightness') {
+        imagePreview.style.filter = currentFilter + '(' + Math.round(currentEffect.min + (2 / 100 * newCoords)) + ')';
       } else {
         imagePreview.style.filter = currentFilter + '(' + newCoords + '%)';
       }
+
       currentEffect.current = newCoords / 100; // запоминаем новое положение пина в процентом соотношении относительно длины линии
     };
 
