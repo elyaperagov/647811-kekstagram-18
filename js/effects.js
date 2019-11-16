@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var START_VALUE = 100;
+
   var effectNone = document.querySelector('#effect-none');
   var effectChrome = document.querySelector('#effect-chrome');
   var effectSepia = document.querySelector('#effect-sepia');
@@ -19,7 +21,6 @@
       class: 'effects__preview--chrome',
       filter: 'grayscale',
       max: 1,
-      current: 1,
       min: 0
     },
 
@@ -28,7 +29,6 @@
       class: 'effects__preview--sepia',
       filter: 'sepia',
       max: 1,
-      current: 1,
       min: 0
     },
     marvin: {
@@ -36,7 +36,6 @@
       class: 'effects__preview--marvin',
       filter: 'invert',
       max: 100,
-      current: 1,
       min: 0
     },
     phobos: {
@@ -44,7 +43,6 @@
       class: 'effects__preview--phobos',
       filter: 'blur',
       max: 3,
-      current: 1,
       min: 0
     },
     heat: {
@@ -52,7 +50,6 @@
       class: 'effects__preview--heat',
       filter: 'brightness',
       max: 3,
-      current: 1,
       min: 1
     }
   };
@@ -66,15 +63,22 @@
   // var levelValue = document.querySelector('.effect-level__value');
 
   var initPin = function (effect) {
-    pin.style.left = effect.current * 100 + '%'; // начальное положение ползунка current для каждого эффекта
+    pin.style.left = START_VALUE + '%';
+    colorDepth.style.width = START_VALUE + '%';
+    currentEffect = effect;
+  };
+
+  /* var initPin = function (effect) { // начальное положение ползунка current для каждого эффекта
     colorDepth.style.width = pin.style.left;
     currentEffect = effect; // в currentEffect записываем текущий эффект из массива
 
-    // if (effect.class === 'effects__preview--phobos') {
-    //  pin.style.left = Math.floor(pin.style.left / 33);
-    //  console.log(pin.style.left);
-    // } else {
-  };
+     if (effect.class === 'effects__preview--phobos' || effect.class === 'effects__preview--heat') {
+      pin.style.left = Math.floor(effect.current * 33) + '%';
+      console.log(pin.style.left);
+     } else {
+      pin.style.left = effect.current * 100 + '%';
+  }; */
+  // }
 
   pin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
