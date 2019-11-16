@@ -63,11 +63,17 @@
   var currentEffect;
   var effectLevel = document.querySelector('.effect-level');
   var colorDepth = document.querySelector('.effect-level__depth');
+  // var levelValue = document.querySelector('.effect-level__value');
 
   var initPin = function (effect) {
     pin.style.left = effect.current * 100 + '%'; // начальное положение ползунка current для каждого эффекта
     colorDepth.style.width = pin.style.left;
     currentEffect = effect; // в currentEffect записываем текущий эффект из массива
+
+    // if (effect.class === 'effects__preview--phobos') {
+    //  pin.style.left = Math.floor(pin.style.left / 33);
+    //  console.log(pin.style.left);
+    // } else {
   };
 
   pin.addEventListener('mousedown', function (evt) {
@@ -98,9 +104,9 @@
       var currentFilter = currentEffect.filter; // записываем текцщий фильтр из массива allEffects
       colorDepth.style.width = newCoords + '%'; // применяем новые свойства фильтра исходя из текущего положения пина
       if (currentFilter === 'blur') {
-        imagePreview.style.filter = currentFilter + '(' + Math.floor(3 / 100 * newCoords) + 'px)';
+        imagePreview.style.filter = currentFilter + '(' + Math.floor(currentEffect.max / 100 * newCoords) + 'px)';
       } else if (currentFilter === 'brightness') {
-        imagePreview.style.filter = currentFilter + '(' + Math.round(currentEffect.min + (2 / 100 * newCoords)) + ')';
+        imagePreview.style.filter = currentFilter + '(' + Math.round(currentEffect.min + ((currentEffect.max - currentEffect.min) / 100 * newCoords)) + ')';
       } else {
         imagePreview.style.filter = currentFilter + '(' + newCoords + '%)';
       }

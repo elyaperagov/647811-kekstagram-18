@@ -2,9 +2,17 @@
 
 (function () {
 
+  var RESIZE_STEP = 25;
+  var RESIZE_MAX = 100;
+
+  var resize = document.querySelector('.scale__control--value');
+  var resizeSmaller = document.querySelector('.scale__control--smaller');
+  var resizeBigger = document.querySelector('.scale__control--bigger');
+  var preview = document.querySelector('.img-upload__preview');
   var upload = document.querySelector('#upload-file');
   var filtersWindow = document.querySelector('.img-upload__overlay');
   var closePreview = document.querySelector('.img-upload__cancel');
+
   var uploadShow = function () {
     filtersWindow.classList.remove('hidden');
     window.helpers.hideItem(window.effects.effectLevel);
@@ -25,14 +33,6 @@
 
   document.addEventListener('keydown', uploadCloseHandler);
   upload.addEventListener('change', uploadShow);
-
-  var RESIZE_STEP = 25;
-  var RESIZE_MAX = 100;
-  var resize = document.querySelector('.scale__control--value');
-  var resizeSmaller = document.querySelector('.scale__control--smaller');
-  var resizeBigger = document.querySelector('.scale__control--bigger');
-  var preview = document.querySelector('.img-upload__preview');
-
 
   var resizeBiggerHandler = function () {
     if (Number.parseInt(resize.value, 10) < RESIZE_MAX) {
