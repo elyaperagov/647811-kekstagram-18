@@ -2,6 +2,8 @@
 
 (function () {
 
+  var COMMENTS = 5;
+
   var Likes = {
     MINIMUM: 15,
     MAXIMUM: 200
@@ -13,7 +15,6 @@
   };
 
   var pictures = document.querySelector('.pictures');
-  window.pictures = pictures;
   var template = document.querySelector('#picture').content.querySelector('.picture');
   var bigPic = document.querySelector('.big-picture');
   var bigPicSocial = bigPic.querySelector('.big-picture__social');
@@ -29,7 +30,7 @@
   }
 
   // ОТРИСОВКА БЛОКА С КОММЕНТАРИЯМИ
-  var renderComments = function (comments, number) {
+  /* var renderComments = function (comments, number) {
     socialComments.innerHTML = '';
     for (var i = 0; i < comments.length && i < number; i++) {
       var li = document.createElement('li');
@@ -46,10 +47,24 @@
       li.appendChild(img);
       li.appendChild(paragraph);
       socialComments.appendChild(li);
+    } */
+  var renderComments = function (comments, number, handler) {
+    var currentCount = 0;
+    var commentTemplate = document.querySelector('#comment').content;
+    socialComments.innerHTML = '';
+    for (var i = 0; i < comments.length && i < number; i++) {
+      var commentElement = commentTemplate.cloneNode(true);
+      commentElement.querySelector('.social__picture').src = comments[i].avatar;
+      commentElement.querySelector('.social__text').textContent = comments[i].message;
+      socialComments.appendChild(commentElement);
+      currentCount++;
     }
+
+    bigPicSocial.querySelector('.comments__current-count').textContent = currentCount;
 
     if (number > comments.length) {
       commentsLoader.classList.add('visually-hidden');
+      commentsLoader.removeEventListener('click', handler);
     } else {
       commentsLoader.classList.remove('visually-hidden');
     }
@@ -70,26 +85,33 @@
       window.fullsize.showBigPhoto(image);
 
       bigPicSocial.querySelector('.social__likes').querySelector('.likes-count').textContent = image.likes;
-      bigPicSocial.querySelector('.social__comment-count').querySelector('.comments-count').textContent = image.messages;
+      // bigPicSocial.querySelector('.social__comment-count').querySelector('.comments-count').textContent = image.messages;
+      // bigPicSocial.querySelector('.social__comment-count').textContent = image.messages;
       bigPicSocial.querySelector('.social__caption').textContent = image.description;
       bigPicSocial.querySelector('.comments-count').textContent = image.comments.length;
 
-      var commentsNumber = 5;
+      var commentsNumber = COMMENTS;
 
-      renderComments(image.comments, commentsNumber);
+      var renderCommentsHandler = function () {
+        commentsNumber += COMMENTS;
+        renderComments(image.comments, commentsNumber, renderCommentsHandler);
+      };
 
-      commentsLoader.addEventListener('click', function () {
-        commentsNumber += 5;
-        renderComments(image.comments, commentsNumber);
-      });
+      renderComments(image.comments, commentsNumber, renderCommentsHandler);
+
+      commentsLoader.addEventListener('click', renderCommentsHandler);
     });
 
-    closeButton.addEventListener('click', function () {
-      window.fullsize.closeBigPhoto(image);
-    });
+    closeButton.addEventListener('click', window.fullsize.closeBigPhoto);
 
     return userImage;
   }
+
+  /* var h = function (image) {
+    return function() {
+    window.fullsize.closeBigPhoto(image);
+    }
+  }*/
 
   var getImage = function (array) {
     var fragment = document.createDocumentFragment();
@@ -141,9 +163,7 @@
     window.sort.random.addEventListener('click', window.debounce(function (evt) {
       randomPhotosHandler(evt);
     }));
-
   };
-
 
   // СООБЩЕНИЕ ОБ ОШИБКЕ
   var errorHandler = function (errorMessage) {
@@ -174,11 +194,13 @@
     openSuccess();
   };
 
-  form.addEventListener('submit', function (e) {
+  var p = function (e) {
     e.preventDefault();
 
     window.backend.sendForm(new FormData(form), sendFormCallback, openError);
-  });
+  };
+
+  form.addEventListener('submit', p);
 
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
 

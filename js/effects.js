@@ -65,21 +65,8 @@
   var initPin = function (effect) {
     pin.style.left = START_VALUE + '%';
     colorDepth.style.width = START_VALUE + '%';
-    pin.style.left = levelValue.value;
     currentEffect = effect;
   };
-
-  /* var initPin = function (effect) { // начальное положение ползунка current для каждого эффекта
-    colorDepth.style.width = pin.style.left;
-    currentEffect = effect; // в currentEffect записываем текущий эффект из массива
-
-     if (effect.class === 'effects__preview--phobos' || effect.class === 'effects__preview--heat') {
-      pin.style.left = Math.floor(effect.current * 33) + '%';
-      console.log(pin.style.left);
-     } else {
-      pin.style.left = effect.current * 100 + '%';
-  }; */
-  // }
 
   pin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();

@@ -4,6 +4,7 @@
 
   var closeBigPhoto = function () {
     window.helpers.hideItem(window.data.bigPic);
+    document.removeEventListener('click', closeBigPhoto);
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
