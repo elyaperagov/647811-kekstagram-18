@@ -4,11 +4,12 @@
 
   var closeBigPhoto = function () {
     window.helpers.hideItem(window.data.bigPic);
+    document.removeEventListener('click', closeBigPhoto);
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === window.data.ESC_KEYCODE) {
+    if (evt.keyCode === window.helpers.ESC_KEYCODE) {
       closeBigPhoto();
     }
   };
@@ -18,7 +19,7 @@
     window.data.bigPic.querySelector('.big-picture__img').querySelector('img').src = data.url;
 
     document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.data.ESC_KEYCODE) {
+      if (evt.keyCode === window.helpers.ESC_KEYCODE) {
         closeBigPhoto();
       }
     });

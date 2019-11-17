@@ -2,7 +2,7 @@
 
 (function () {
 
-  var PREFERENCES = {
+  var Preferences = {
     HASH: '#',
     START_POSITION: 0,
     MAX_QUANTITY: 5,
@@ -21,7 +21,7 @@
   };
 
   var validateComment = function (comment) {
-    if (comment.length > PREFERENCES.MAX_COMMENT_LENGTH) {
+    if (comment.length > Preferences.MAX_COMMENT_LENGTH) {
       textarea.setCustomValidity('Длина комментария не может составлять больше 140 символов;');
       colorChange(textarea);
       return false;
@@ -29,22 +29,21 @@
     return true;
   };
 
-  var checkDoubleHashtags = function (tags) {
-    for (var i = 0; i < tags.length; i++) {
-      for (var t = 0; t < tags.length; t++) {
-        if (tags[i] === tags[t] && i !== t) {
-          return true;
-        }
+  var checkDoubleHashtags = function (arr) {
+    var myArray = arr.sort();
+    for (var i = 0; i < myArray.length; i++) {
+      if (myArray.indexOf(myArray[i]) !== myArray.lastIndexOf(myArray[i])) {
+        return true;
       }
     }
     return false;
   };
 
   var validateHashtag = function (hashtag) {
-    var isLong = hashtag.length > PREFERENCES.MAX_LENGTH;
+    var isLong = hashtag.length > Preferences.MAX_LENGTH;
     var isNotHashtag = hashtag[0] !== '#';
     var isOnlyHash = hashtag === '#';
-    var isSpaceUsed = hashtag.indexOf(PREFERENCES.HASH, 1) > 1;
+    var isSpaceUsed = hashtag.indexOf(Preferences.HASH, 1) > 1;
 
     if (isLong) {
       inputElement.setCustomValidity('максимальная длина одного хэш-тега 20 символов, включая решётку;');
@@ -77,7 +76,7 @@
       return false;
     }
 
-    var isTooMany = tags.length > PREFERENCES.MAX_QUANTITY;
+    var isTooMany = tags.length > Preferences.MAX_QUANTITY;
     if (isTooMany) {
       inputElement.setCustomValidity('нельзя указать больше пяти хэш-тегов;');
       return false;

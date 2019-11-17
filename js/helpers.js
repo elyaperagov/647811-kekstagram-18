@@ -2,6 +2,8 @@
 
 (function () {
 
+  var ESC_KEYCODE = 27;
+
   var showItem = function (item) {
     item.classList.remove('hidden');
   };
@@ -28,12 +30,20 @@
     return arr.slice(0, 10).sort(sortRandom);
   };
 
+  var isEscEvent = function (evt, arg) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      arg();
+    }
+  };
+
   window.helpers = {
     showItem: showItem,
     hideItem: hideItem,
     getRandomNumber: getRandomNumber,
     sortByComments: sortByComments,
     sortRandom: sortRandom,
-    sortRandomPhotos: sortRandomPhotos
+    sortRandomPhotos: sortRandomPhotos,
+    isEscEvent: isEscEvent,
+    ESC_KEYCODE: ESC_KEYCODE
   };
 })();

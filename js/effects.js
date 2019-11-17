@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var START_VALUE = 100;
+
   var effectNone = document.querySelector('#effect-none');
   var effectChrome = document.querySelector('#effect-chrome');
   var effectSepia = document.querySelector('#effect-sepia');
@@ -19,7 +21,6 @@
       class: 'effects__preview--chrome',
       filter: 'grayscale',
       max: 1,
-      current: 1,
       min: 0
     },
 
@@ -28,7 +29,6 @@
       class: 'effects__preview--sepia',
       filter: 'sepia',
       max: 1,
-      current: 1,
       min: 0
     },
     marvin: {
@@ -36,7 +36,6 @@
       class: 'effects__preview--marvin',
       filter: 'invert',
       max: 100,
-      current: 1,
       min: 0
     },
     phobos: {
@@ -44,7 +43,6 @@
       class: 'effects__preview--phobos',
       filter: 'blur',
       max: 3,
-      current: 1,
       min: 0
     },
     heat: {
@@ -52,8 +50,7 @@
       class: 'effects__preview--heat',
       filter: 'brightness',
       max: 3,
-      current: 1,
-      min: 0
+      min: 1
     }
   };
 
@@ -63,22 +60,22 @@
   var currentEffect;
   var effectLevel = document.querySelector('.effect-level');
   var colorDepth = document.querySelector('.effect-level__depth');
+  var levelValue = document.querySelector('.effect-level__value');
 
   var initPin = function (effect) {
-    pin.style.left = effect.current * 100 + '%'; // начальное положение ползунка current для каждого эффекта
-    colorDepth.style.width = pin.style.left;
-    currentEffect = effect; // в currentEffect записываем текущий эффект из массива
+    pin.style.left = START_VALUE + '%';
+    colorDepth.style.width = START_VALUE + '%';
+    currentEffect = effect;
   };
 
   pin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    var startCoords = evt.clientX; // начальная координата
-
-    var moveRange = line.offsetWidth; // ширина линии
+    var startCoords = evt.clientX;
+    var moveRange = line.offsetWidth;
     var getNewOffsetLeft = function (shift) {
       var newOffsetLeft = (pin.offsetLeft - shift) / moveRange * 100;
-      if (newOffsetLeft < 0) { // Если текущее положение ползунка меньше 0 или больше 100, то ставим 0 или 100
+      if (newOffsetLeft < 0) {
         newOffsetLeft = 0;
       } else if (newOffsetLeft > 100) {
         newOffsetLeft = 100;
@@ -91,18 +88,22 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       dragged = true;
-      var shift = startCoords - moveEvt.clientX; // разница координат, на которую сдвинулись
+      var shift = startCoords - moveEvt.clientX;
       startCoords = moveEvt.clientX;
-      var newCoords = getNewOffsetLeft(shift); // новая координата
-      pin.style.left = newCoords + '%'; // новое положение пина из getNewOffset
-      var currentFilter = currentEffect.filter; // записываем текцщий фильтр из массива allEffects
-      colorDepth.style.width = newCoords + '%'; // применяем новые свойства фильтра исходя из текущего положения пина
+      var newCoords = getNewOffsetLeft(shift);
+      pin.style.left = newCoords + '%';
+      var currentFilter = currentEffect.filter;
+      colorDepth.style.width = newCoords + '%';
+      levelValue.setAttribute('value', Math.round(newCoords));
       if (currentFilter === 'blur') {
-        imagePreview.style.filter = currentFilter + '(' + Math.floor(newCoords / 33) + 'px)';
+        imagePreview.style.filter = currentFilter + '(' + Math.floor(currentEffect.max / 100 * newCoords) + 'px)';
+      } else if (currentFilter === 'brightness') {
+        imagePreview.style.filter = currentFilter + '(' + Math.round(currentEffect.min + ((currentEffect.max - currentEffect.min) / 100 * newCoords)) + ')';
       } else {
         imagePreview.style.filter = currentFilter + '(' + newCoords + '%)';
       }
-      currentEffect.current = newCoords / 100; // запоминаем новое положение пина в процентом соотношении относительно длины линии
+
+      currentEffect.current = newCoords / 100;
     };
 
     var onMouseUp = function (upEvt) {
@@ -131,7 +132,7 @@
     }
   };
 
-  var effectsHandler = function (object) {
+  var effectsChange = function (object) {
     var list = Object.values(object);
     for (var i = 0; i < list.length; i++) {
       if (list[i] && list[i].element && list[i].class) {
@@ -157,7 +158,7 @@
     };
   };
 
-  effectsHandler(allEffects);
+  effectsChange(allEffects);
 
   window.effects = {
     effectLevel: effectLevel
