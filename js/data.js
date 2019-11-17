@@ -164,6 +164,7 @@
     window.helpers.hideItem(formOverlay);
     main.classList.add('modal-open');
     openSuccess();
+    form.reset();
   };
 
   form.addEventListener('submit', function (e) {
