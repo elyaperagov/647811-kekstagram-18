@@ -60,11 +60,12 @@
   var currentEffect;
   var effectLevel = document.querySelector('.effect-level');
   var colorDepth = document.querySelector('.effect-level__depth');
-  // var levelValue = document.querySelector('.effect-level__value');
+  var levelValue = document.querySelector('.effect-level__value');
 
   var initPin = function (effect) {
     pin.style.left = START_VALUE + '%';
     colorDepth.style.width = START_VALUE + '%';
+    pin.style.left = levelValue.value;
     currentEffect = effect;
   };
 
@@ -107,6 +108,7 @@
       pin.style.left = newCoords + '%'; // новое положение пина из getNewOffset
       var currentFilter = currentEffect.filter; // записываем текцщий фильтр из массива allEffects
       colorDepth.style.width = newCoords + '%'; // применяем новые свойства фильтра исходя из текущего положения пина
+      levelValue.setAttribute('value', Math.round(newCoords));
       if (currentFilter === 'blur') {
         imagePreview.style.filter = currentFilter + '(' + Math.floor(currentEffect.max / 100 * newCoords) + 'px)';
       } else if (currentFilter === 'brightness') {
