@@ -12,26 +12,28 @@
   var upload = document.querySelector('#upload-file');
   var filtersWindow = document.querySelector('.img-upload__overlay');
   var closePreview = document.querySelector('.img-upload__cancel');
-
-  var uploadShow = function () {
-    filtersWindow.classList.remove('hidden');
-    window.helpers.hideItem(window.effects.effectLevel);
-  };
+  var form = document.querySelector('.img-upload__form');
 
   var uploadClose = function () {
     window.helpers.hideItem(filtersWindow);
+    closePreview.removeEventListener('click', uploadClose);
     document.removeEventListener('keydown', uploadCloseHandler);
+    form.reset();
   };
 
-  closePreview.addEventListener('click', uploadClose);
-
   var uploadCloseHandler = function (evt) {
-    if (evt.keyCode === window.data.ESC_KEYCODE && !window.validity.inputElement.matches(':focus') && !window.validity.textarea.matches(':focus')) {
+    if (evt.keyCode === window.helpers.ESC_KEYCODE && !window.validity.inputElement.matches(':focus') && !window.validity.textarea.matches(':focus')) {
       uploadClose();
     }
   };
 
-  document.addEventListener('keydown', uploadCloseHandler);
+  var uploadShow = function () {
+    window.helpers.showItem(filtersWindow);
+    closePreview.addEventListener('click', uploadClose);
+    document.addEventListener('keydown', uploadCloseHandler);
+    window.helpers.hideItem(window.effects.effectLevel);
+  };
+
   upload.addEventListener('change', uploadShow);
 
   var resizeBiggerHandler = function () {

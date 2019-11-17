@@ -2,13 +2,10 @@
 
 (function () {
 
-  var ESC_KEYCODE = 27;
-
   var Likes = {
     MINIMUM: 15,
     MAXIMUM: 200
   };
-
 
   var Messages = {
     MINIMUM: 1,
@@ -170,7 +167,6 @@
   var form = document.querySelector('.img-upload__form');
   var formOverlay = document.querySelector('.img-upload__overlay');
   var main = document.querySelector('main');
-  var body = document.querySelector('body');
 
   var sendFormCallback = function () {
     window.helpers.hideItem(formOverlay);
@@ -184,77 +180,54 @@
     window.backend.sendForm(new FormData(form), sendFormCallback, openError);
   });
 
+  var successTemplate = document.querySelector('#success').content.querySelector('.success');
+
   var openSuccess = function () {
-    var successTemplate = document.querySelector('#success').content;
-    var successPopup = successTemplate.cloneNode(true).querySelector('.success');
-
-    body.appendChild(successPopup);
-
-    var successButton = document.querySelector('.success__button');
-
-    var closeSuccessHandler = function () {
-      body.removeChild(successPopup);
-      successPopup.removeEventListener('click', closeSuccessHandler);
-      document.removeEventListener('keydown', escSuccessHandler);
-      main.classList.remove('modal-open');
+    var success = successTemplate.cloneNode(true);
+    main.appendChild(success);
+    var successClickHandler = function () {
+      if (success) {
+        main.removeChild(success);
+      }
+      document.removeEventListener('click', successClickHandler);
+      document.removeEventListener('keydown', succesKeydownHandler);
     };
 
-    successButton.addEventListener('click', closeSuccessHandler);
+    document.addEventListener('click', successClickHandler);
 
-    var escSuccessHandler = function (evt) {
-      if (evt.keyCode === ESC_KEYCODE) {
-        closeSuccessHandler();
-      }
+    var succesKeydownHandler = function (evt) {
+      window.helpers.isEscEvent(evt, successClickHandler);
     };
 
-    document.addEventListener('keydown', escSuccessHandler);
-
-    document.addEventListener('click', function (evt) {
-      if (evt.target === successPopup) {
-        closeSuccessHandler();
-      }
-    });
+    document.addEventListener('keydown', succesKeydownHandler);
   };
 
   var openError = function () {
-    window.helpers.hideItem(formOverlay);
+    formOverlay.classList.add('hidden');
     var errorTemplate = document.querySelector('#error').content;
-
-    var errorPopup = errorTemplate.cloneNode(true).querySelector('.error');
-
+    var errorPopup = errorTemplate.cloneNode(true);
     main.appendChild(errorPopup);
-
-    var errorButton = document.querySelector('.error__button');
-
-    var closeErrorHandler = function () {
-      main.removeChild(errorPopup);
-      errorButton.removeEventListener('click', closeErrorHandler);
-      document.removeEventListener('keydown', escErrorHandler);
+    var error = document.querySelector('.error');
+    var closeError = function () {
+      if (error) {
+        main.removeChild(error);
+      }
+      document.removeEventListener('click', closeError);
+      document.removeEventListener('keydown', errorKeydownHandler);
     };
 
-    errorButton.addEventListener('click', closeErrorHandler);
+    document.addEventListener('click', closeError);
 
-    var escErrorHandler = function (evt) {
-      if (evt.keyCode === ESC_KEYCODE) {
-        closeErrorHandler();
-      }
+    var errorKeydownHandler = function (evt) {
+      window.helpers.isEscEvent(evt, closeError);
     };
-
-    document.addEventListener('keydown', escErrorHandler);
-
-    document.addEventListener('click', function (evt) {
-      if (evt.target === errorPopup) {
-        closeErrorHandler();
-      }
-    });
-
+    document.addEventListener('keydown', errorKeydownHandler);
   };
 
   window.data = {
     bigPic: bigPic,
     bigPicSocial: bigPicSocial,
-    pictures: pictures,
-    ESC_KEYCODE: ESC_KEYCODE
+    pictures: pictures
   };
 
 })();
