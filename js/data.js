@@ -18,6 +18,12 @@
   var template = document.querySelector('#picture').content.querySelector('.picture');
   var bigPic = document.querySelector('.big-picture');
   var bigPicSocial = bigPic.querySelector('.big-picture__social');
+  var closeButton = bigPic.querySelector('#picture-cancel');
+  var socialComments = document.querySelector('.social__comments');
+  var commentsLoader = document.querySelector('.comments-loader');
+  var form = document.querySelector('.img-upload__form');
+  var formOverlay = document.querySelector('.img-upload__overlay');
+  var main = document.querySelector('main');
 
   var images = [];
   window.images = images;
@@ -29,25 +35,6 @@
     });
   }
 
-  // ОТРИСОВКА БЛОКА С КОММЕНТАРИЯМИ
-  /* var renderComments = function (comments, number) {
-    socialComments.innerHTML = '';
-    for (var i = 0; i < comments.length && i < number; i++) {
-      var li = document.createElement('li');
-      li.classList = 'social__comment ';
-      var img = document.createElement('img');
-      img.classList = 'social__picture';
-      img.src = comments[i].avatar;
-      img.width = '35';
-      img.height = '35';
-      img.alt = comments[i].name;
-      var paragraph = document.createElement('p');
-      paragraph.classList = 'social__text';
-      paragraph.textContent = comments[i].message;
-      li.appendChild(img);
-      li.appendChild(paragraph);
-      socialComments.appendChild(li);
-    } */
   var renderComments = function (comments, number, handler) {
     var currentCount = 0;
     var commentTemplate = document.querySelector('#comment').content;
@@ -56,6 +43,7 @@
       var commentElement = commentTemplate.cloneNode(true);
       commentElement.querySelector('.social__picture').src = comments[i].avatar;
       commentElement.querySelector('.social__text').textContent = comments[i].message;
+      commentElement.querySelector('.social__picture').alt = comments[i].name;
       socialComments.appendChild(commentElement);
       currentCount++;
     }
@@ -70,12 +58,8 @@
     }
   };
 
-  var closeButton = bigPic.querySelector('#picture-cancel');
-  var socialComments = document.querySelector('.social__comments');
-  var commentsLoader = document.querySelector('.comments-loader');
-
   // ШАБЛОН
-  function renderTemplate(image) {
+  var renderTemplate = function (image) {
     var userImage = template.cloneNode(true);
 
     userImage.querySelector('.picture__img').src = image.url;
@@ -84,9 +68,7 @@
     userImage.addEventListener('click', function () {
       window.fullsize.showBigPhoto(image);
 
-      bigPicSocial.querySelector('.social__likes').querySelector('.likes-count').textContent = image.likes;
-      // bigPicSocial.querySelector('.social__comment-count').querySelector('.comments-count').textContent = image.messages;
-      // bigPicSocial.querySelector('.social__comment-count').textContent = image.messages;
+      bigPicSocial.querySelector('.likes-count').textContent = image.likes;
       bigPicSocial.querySelector('.social__caption').textContent = image.description;
       bigPicSocial.querySelector('.comments-count').textContent = image.comments.length;
 
@@ -105,13 +87,7 @@
     closeButton.addEventListener('click', window.fullsize.closeBigPhoto);
 
     return userImage;
-  }
-
-  /* var h = function (image) {
-    return function() {
-    window.fullsize.closeBigPhoto(image);
-    }
-  }*/
+  };
 
   var getImage = function (array) {
     var fragment = document.createDocumentFragment();
@@ -184,23 +160,17 @@
 
 
   // ОТПРАВКА ФОРМЫ С ФОТО
-  var form = document.querySelector('.img-upload__form');
-  var formOverlay = document.querySelector('.img-upload__overlay');
-  var main = document.querySelector('main');
-
   var sendFormCallback = function () {
     window.helpers.hideItem(formOverlay);
     main.classList.add('modal-open');
     openSuccess();
   };
 
-  var p = function (e) {
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
 
     window.backend.sendForm(new FormData(form), sendFormCallback, openError);
-  };
-
-  form.addEventListener('submit', p);
+  });
 
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
 

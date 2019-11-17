@@ -71,12 +71,11 @@
   pin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    var startCoords = evt.clientX; // начальная координата
-
-    var moveRange = line.offsetWidth; // ширина линии
+    var startCoords = evt.clientX;
+    var moveRange = line.offsetWidth;
     var getNewOffsetLeft = function (shift) {
       var newOffsetLeft = (pin.offsetLeft - shift) / moveRange * 100;
-      if (newOffsetLeft < 0) { // Если текущее положение ползунка меньше 0 или больше 100, то ставим 0 или 100
+      if (newOffsetLeft < 0) {
         newOffsetLeft = 0;
       } else if (newOffsetLeft > 100) {
         newOffsetLeft = 100;
@@ -89,12 +88,12 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       dragged = true;
-      var shift = startCoords - moveEvt.clientX; // разница координат, на которую сдвинулись
+      var shift = startCoords - moveEvt.clientX;
       startCoords = moveEvt.clientX;
-      var newCoords = getNewOffsetLeft(shift); // новая координата
-      pin.style.left = newCoords + '%'; // новое положение пина из getNewOffset
-      var currentFilter = currentEffect.filter; // записываем текцщий фильтр из массива allEffects
-      colorDepth.style.width = newCoords + '%'; // применяем новые свойства фильтра исходя из текущего положения пина
+      var newCoords = getNewOffsetLeft(shift);
+      pin.style.left = newCoords + '%';
+      var currentFilter = currentEffect.filter;
+      colorDepth.style.width = newCoords + '%';
       levelValue.setAttribute('value', Math.round(newCoords));
       if (currentFilter === 'blur') {
         imagePreview.style.filter = currentFilter + '(' + Math.floor(currentEffect.max / 100 * newCoords) + 'px)';
@@ -104,7 +103,7 @@
         imagePreview.style.filter = currentFilter + '(' + newCoords + '%)';
       }
 
-      currentEffect.current = newCoords / 100; // запоминаем новое положение пина в процентом соотношении относительно длины линии
+      currentEffect.current = newCoords / 100;
     };
 
     var onMouseUp = function (upEvt) {

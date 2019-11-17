@@ -29,7 +29,6 @@
     return true;
   };
 
-
   var checkDoubleHashtags = function (arr) {
     var myArray = arr.sort();
     for (var i = 0; i < myArray.length; i++) {
@@ -39,7 +38,6 @@
     }
     return false;
   };
-
 
   var validateHashtag = function (hashtag) {
     var isLong = hashtag.length > Preferences.MAX_LENGTH;
