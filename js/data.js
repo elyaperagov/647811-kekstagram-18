@@ -31,18 +31,32 @@
     });
   }
 
-  var renderComments = function (comments, number, handler) {
-    var currentCount = 0;
-    var commentTemplate = document.querySelector('#comment').content;
+  var renderComments = function (comments) {
     socialComments.innerHTML = '';
+    var li = document.createElement('li');
+    li.classList.add('social__comment');
+    var img = document.createElement('img');
+    img.classList.add('social__picture');
+    img.src = comments.avatar;
+    img.width = '35';
+    img.height = '35';
+    img.alt = comments.name;
+    var paragraph = document.createElement('p');
+    paragraph.classList.add('social__text');
+    paragraph.textContent = comments.message;
+    li.appendChild(img);
+    li.appendChild(paragraph);
+    return li;
+  };
+
+  var generateComment = function (comments, number, handler) {
+    var fragment = document.createDocumentFragment();
+    var currentCount = 0;
     for (var i = 0; i < comments.length && i < number; i++) {
-      var commentElement = commentTemplate.cloneNode(true);
-      commentElement.querySelector('.social__picture').src = comments[i].avatar;
-      commentElement.querySelector('.social__text').textContent = comments[i].message;
-      commentElement.querySelector('.social__picture').alt = comments[i].name;
-      socialComments.appendChild(commentElement);
+      fragment.appendChild(renderComments(comments[i]));
       currentCount++;
     }
+    socialComments.appendChild(fragment);
 
     bigPicSocial.querySelector('.comments__current-count').textContent = currentCount;
 
@@ -72,10 +86,10 @@
 
       var renderCommentsHandler = function () {
         commentsNumber += COMMENTS;
-        renderComments(image.comments, commentsNumber, renderCommentsHandler);
+        generateComment(image.comments, commentsNumber, renderCommentsHandler);
       };
 
-      renderComments(image.comments, commentsNumber, renderCommentsHandler);
+      generateComment(image.comments, commentsNumber, renderCommentsHandler);
 
       commentsLoader.addEventListener('click', renderCommentsHandler);
     });
