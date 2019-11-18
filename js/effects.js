@@ -3,6 +3,17 @@
 (function () {
   var START_VALUE = 100;
 
+  var pin = document.querySelector('.effect-level__pin');
+  var imagePreview = document.querySelector('.img-upload__preview');
+  var line = document.querySelector('.effect-level__line');
+  var currentEffect;
+  var effectLevel = document.querySelector('.effect-level');
+  var colorDepth = document.querySelector('.effect-level__depth');
+  var levelValue = document.querySelector('.effect-level__value');
+  var main = document.querySelector('main');
+  var form = document.querySelector('.img-upload__form');
+  var formOverlay = document.querySelector('.img-upload__overlay');
+
   var effectNone = document.querySelector('#effect-none');
   var effectChrome = document.querySelector('#effect-chrome');
   var effectSepia = document.querySelector('#effect-sepia');
@@ -53,17 +64,6 @@
       min: 1
     }
   };
-
-  var pin = document.querySelector('.effect-level__pin');
-  var imagePreview = document.querySelector('.img-upload__preview');
-  var line = document.querySelector('.effect-level__line');
-  var currentEffect;
-  var effectLevel = document.querySelector('.effect-level');
-  var colorDepth = document.querySelector('.effect-level__depth');
-  var levelValue = document.querySelector('.effect-level__value');
-  var main = document.querySelector('main');
-  var form = document.querySelector('.img-upload__form');
-  var formOverlay = document.querySelector('.img-upload__overlay');
 
   var initPin = function (effect) {
     pin.style.left = START_VALUE + '%';

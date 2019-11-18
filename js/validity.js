@@ -10,7 +10,6 @@
     MAX_COMMENT_LENGTH: 140
   };
 
-
   var formElement = document.querySelector('#upload-select-image');
   var inputElement = formElement.querySelector('.text__hashtags');
   var buttonElement = formElement.querySelector('#upload-submit');
