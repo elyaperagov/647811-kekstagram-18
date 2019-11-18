@@ -21,9 +21,6 @@
   var closeButton = bigPic.querySelector('#picture-cancel');
   var socialComments = document.querySelector('.social__comments');
   var commentsLoader = document.querySelector('.comments-loader');
-  var form = document.querySelector('.img-upload__form');
-  var formOverlay = document.querySelector('.img-upload__overlay');
-  var main = document.querySelector('main');
 
   var images = [];
   window.images = images;
@@ -158,68 +155,8 @@
 
   window.backend.load(URL, successHandler, errorHandler);
 
-
-  // ОТПРАВКА ФОРМЫ С ФОТО
-  var sendFormCallback = function () {
-    window.helpers.hideItem(formOverlay);
-    main.classList.add('modal-open');
-    openSuccess();
-    form.reset();
-  };
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    window.backend.sendForm(new FormData(form), sendFormCallback, openError);
-  });
-
-  var successTemplate = document.querySelector('#success').content.querySelector('.success');
-
-  var openSuccess = function () {
-    var success = successTemplate.cloneNode(true);
-    main.appendChild(success);
-    var successClickHandler = function () {
-      if (success) {
-        main.removeChild(success);
-      }
-      document.removeEventListener('click', successClickHandler);
-      document.removeEventListener('keydown', succesKeydownHandler);
-    };
-
-    document.addEventListener('click', successClickHandler);
-
-    var succesKeydownHandler = function (evt) {
-      window.helpers.isEscEvent(evt, successClickHandler);
-    };
-
-    document.addEventListener('keydown', succesKeydownHandler);
-  };
-
-  var openError = function () {
-    formOverlay.classList.add('hidden');
-    var errorTemplate = document.querySelector('#error').content;
-    var errorPopup = errorTemplate.cloneNode(true);
-    main.appendChild(errorPopup);
-    var error = document.querySelector('.error');
-    var closeError = function () {
-      if (error) {
-        main.removeChild(error);
-      }
-      document.removeEventListener('click', closeError);
-      document.removeEventListener('keydown', errorKeydownHandler);
-    };
-
-    document.addEventListener('click', closeError);
-
-    var errorKeydownHandler = function (evt) {
-      window.helpers.isEscEvent(evt, closeError);
-    };
-    document.addEventListener('keydown', errorKeydownHandler);
-  };
-
   window.data = {
     bigPic: bigPic,
-    bigPicSocial: bigPicSocial,
     pictures: pictures
   };
 

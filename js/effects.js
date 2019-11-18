@@ -61,6 +61,9 @@
   var effectLevel = document.querySelector('.effect-level');
   var colorDepth = document.querySelector('.effect-level__depth');
   var levelValue = document.querySelector('.effect-level__value');
+  var main = document.querySelector('main');
+  var form = document.querySelector('.img-upload__form');
+  var formOverlay = document.querySelector('.img-upload__overlay');
 
   var initPin = function (effect) {
     pin.style.left = START_VALUE + '%';
@@ -160,8 +163,75 @@
 
   effectsChange(allEffects);
 
+  var resetForm = function (arr) {
+    var previewClass = Object.values(arr);
+    for (var i = 0; i < previewClass.length; i++) {
+      imagePreview.classList.remove(previewClass[i].class);
+    }
+  };
+
+  // ОТПРАВКА ФОРМЫ С ФОТО
+  var sendFormCallback = function () {
+    window.helpers.hideItem(formOverlay);
+    main.classList.add('modal-open');
+    openSuccess();
+    form.reset();
+    resetForm(allEffects);
+  };
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    window.backend.sendForm(new FormData(form), sendFormCallback, openError);
+  });
+
+  var successTemplate = document.querySelector('#success').content.querySelector('.success');
+
+  var openSuccess = function () {
+    var success = successTemplate.cloneNode(true);
+    main.appendChild(success);
+    var successClickHandler = function () {
+      if (success) {
+        main.removeChild(success);
+      }
+      document.removeEventListener('click', successClickHandler);
+      document.removeEventListener('keydown', succesKeydownHandler);
+    };
+
+    document.addEventListener('click', successClickHandler);
+
+    var succesKeydownHandler = function (evt) {
+      window.helpers.isEscEvent(evt, successClickHandler);
+    };
+
+    document.addEventListener('keydown', succesKeydownHandler);
+  };
+
+  var openError = function () {
+    formOverlay.classList.add('hidden');
+    var errorTemplate = document.querySelector('#error').content;
+    var errorPopup = errorTemplate.cloneNode(true);
+    main.appendChild(errorPopup);
+    var error = document.querySelector('.error');
+    var closeError = function () {
+      if (error) {
+        main.removeChild(error);
+      }
+      document.removeEventListener('click', closeError);
+      document.removeEventListener('keydown', errorKeydownHandler);
+    };
+
+    document.addEventListener('click', closeError);
+
+    var errorKeydownHandler = function (evt) {
+      window.helpers.isEscEvent(evt, closeError);
+    };
+    document.addEventListener('keydown', errorKeydownHandler);
+  };
+
   window.effects = {
-    effectLevel: effectLevel
+    effectLevel: effectLevel,
+    form: form
   };
 
 })();

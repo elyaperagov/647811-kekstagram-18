@@ -12,13 +12,12 @@
   var upload = document.querySelector('#upload-file');
   var filtersWindow = document.querySelector('.img-upload__overlay');
   var closePreview = document.querySelector('.img-upload__cancel');
-  var form = document.querySelector('.img-upload__form');
 
   var uploadClose = function () {
     window.helpers.hideItem(filtersWindow);
     closePreview.removeEventListener('click', uploadClose);
     document.removeEventListener('keydown', uploadCloseHandler);
-    form.reset();
+    window.effects.form.reset();
   };
 
   var uploadCloseHandler = function (evt) {
