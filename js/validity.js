@@ -28,11 +28,12 @@
     return true;
   };
 
-  var checkDoubleHashtags = function (arr) {
-    var myArray = arr.sort();
-    for (var i = 0; i < myArray.length; i++) {
-      if (myArray.indexOf(myArray[i]) !== myArray.lastIndexOf(myArray[i])) {
-        return true;
+  var checkDoubleHashtags = function (tags) {
+    for (var i = 0; i < tags.length; i++) {
+      for (var t = i; t < tags.length; t++) {
+        if (i !== t && tags[i] === tags[t]) {
+          return true;
+        }
       }
     }
     return false;

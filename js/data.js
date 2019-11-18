@@ -23,7 +23,6 @@
   var commentsLoader = document.querySelector('.comments-loader');
 
   var images = [];
-  window.images = images;
   for (var imageNumber = 1; imageNumber <= 25; imageNumber++) {
     images.push({
       url: 'photos/' + imageNumber + '.jpg',
