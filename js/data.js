@@ -49,9 +49,9 @@
     return li;
   };
 
-  var generateComment = function (comments, number, handler) {
+  var generateComment = function (comments, number, handler, currentCount) {
     var fragment = document.createDocumentFragment();
-    var currentCount = 0;
+    currentCount = 0;
     for (var i = 0; i < comments.length && i < number; i++) {
       fragment.appendChild(renderComments(comments[i]));
       currentCount++;
@@ -68,6 +68,42 @@
     }
   };
 
+  var showBigPhoto = function (data, current) {
+    window.helpers.showItem(bigPic);
+    bigPicSocial.querySelector('.likes-count').textContent = data.likes;
+    bigPicSocial.querySelector('.social__caption').textContent = data.description;
+    bigPicSocial.querySelector('.comments-count').textContent = data.comments.length;
+    bigPic.querySelector('.big-picture__img').querySelector('img').src = data.url;
+
+    var commentsNumber = COMMENTS;
+
+    var renderCommentsHandler = function () {
+      commentsNumber += COMMENTS;
+      generateComment(data.comments, commentsNumber, renderCommentsHandler);
+    };
+    generateComment(data.comments, commentsNumber, renderCommentsHandler, current);
+    commentsLoader.addEventListener('click', renderCommentsHandler);
+    closeButton.addEventListener('click', closeBigPhoto);
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.helpers.ESC_KEYCODE) {
+        closeBigPhoto();
+      }
+    });
+
+    var closeBigPhoto = function () {
+      window.helpers.hideItem(bigPic);
+      document.removeEventListener('click', closeBigPhoto);
+      document.removeEventListener('keydown', onPopupEscPress);
+    };
+
+    var onPopupEscPress = function (evt) {
+      if (evt.keyCode === window.helpers.ESC_KEYCODE) {
+        closeBigPhoto();
+      }
+    };
+  };
+
   // ШАБЛОН
   var renderTemplate = function (image) {
     var userImage = template.cloneNode(true);
@@ -76,26 +112,8 @@
     userImage.querySelector('.picture__likes').textContent = image.likes;
     userImage.querySelector('.picture__comments').textContent = image.comments.length;
     userImage.addEventListener('click', function () {
-      window.fullsize.showBigPhoto(image);
-
-      bigPicSocial.querySelector('.likes-count').textContent = image.likes;
-      bigPicSocial.querySelector('.social__caption').textContent = image.description;
-      bigPicSocial.querySelector('.comments-count').textContent = image.comments.length;
-
-      var commentsNumber = COMMENTS;
-
-      var renderCommentsHandler = function () {
-        commentsNumber += COMMENTS;
-        generateComment(image.comments, commentsNumber, renderCommentsHandler);
-      };
-
-      generateComment(image.comments, commentsNumber, renderCommentsHandler);
-
-      commentsLoader.addEventListener('click', renderCommentsHandler);
+      showBigPhoto(image);
     });
-
-    closeButton.addEventListener('click', window.fullsize.closeBigPhoto);
-
     return userImage;
   };
 
