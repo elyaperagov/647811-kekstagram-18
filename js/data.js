@@ -83,28 +83,31 @@
     };
     generateComment(data.comments, commentsNumber, renderCommentsHandler, current);
     commentsLoader.addEventListener('click', renderCommentsHandler);
+
     closeButton.addEventListener('click', closeBigPhoto);
-
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.helpers.ESC_KEYCODE) {
-        closeBigPhoto();
-      }
-    });
-
-    var closeBigPhoto = function () {
-      window.helpers.hideItem(bigPic);
-      document.removeEventListener('click', closeBigPhoto);
-      document.removeEventListener('keydown', onPopupEscPress);
-    };
-
-    var onPopupEscPress = function (evt) {
-      if (evt.keyCode === window.helpers.ESC_KEYCODE) {
-        closeBigPhoto();
-      }
-    };
+    closeButton.addEventListener('keydown', onBigPicKeydownEnter);
+    document.addEventListener('keydown', onBigPicKeydownEsc);
   };
 
-  // ШАБЛОН
+  var onBigPicKeydownEsc = function (evt) {
+    window.helpers.isEscEvent(evt, closeBigPhoto);
+  };
+
+  var onBigPicKeydownEnter = function (evt) {
+    window.helpers.isEnterEvent(evt, closeBigPhoto);
+  };
+
+  var onCloseButtonClick = function () {
+    closeBigPhoto();
+  };
+
+  var closeBigPhoto = function () {
+    window.helpers.hideItem(bigPic);
+    closeButton.removeEventListener('click', onCloseButtonClick);
+    closeButton.removeEventListener('keydown', onBigPicKeydownEnter);
+    document.removeEventListener('keydown', onBigPicKeydownEsc);
+  };
+
   var renderTemplate = function (image) {
     var userImage = template.cloneNode(true);
 
@@ -126,8 +129,6 @@
     pictures.appendChild(fragment);
     filters.classList.remove('img-filters--inactive');
   };
-
-  // СОРТИРОВКА
 
   var successHandler = function (data) {
     var photos = data;
@@ -169,7 +170,6 @@
     }));
   };
 
-  // СООБЩЕНИЕ ОБ ОШИБКЕ
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';

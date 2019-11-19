@@ -3,6 +3,7 @@
 (function () {
 
   var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 27;
 
   var showItem = function (item) {
     item.classList.remove('hidden');
@@ -36,6 +37,12 @@
     }
   };
 
+  var isEnterEvent = function (evt, arg) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      arg();
+    }
+  };
+
   window.helpers = {
     showItem: showItem,
     hideItem: hideItem,
@@ -44,6 +51,7 @@
     sortRandom: sortRandom,
     sortRandomPhotos: sortRandomPhotos,
     isEscEvent: isEscEvent,
+    isEnterEvent: isEnterEvent,
     ESC_KEYCODE: ESC_KEYCODE
   };
 })();
