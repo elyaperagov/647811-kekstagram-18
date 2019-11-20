@@ -176,6 +176,7 @@
     openSuccess();
     form.reset();
     window.validity.textarea.value = '';
+    window.validity.inputElement.value = '';
     resetForm(allEffects);
   };
 
