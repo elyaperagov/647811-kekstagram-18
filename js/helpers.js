@@ -48,7 +48,6 @@
     hideItem: hideItem,
     getRandomNumber: getRandomNumber,
     sortByComments: sortByComments,
-    sortRandom: sortRandom,
     sortRandomPhotos: sortRandomPhotos,
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
