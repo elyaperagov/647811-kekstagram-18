@@ -175,6 +175,7 @@
     main.classList.add('modal-open');
     openSuccess();
     form.reset();
+    window.validity.textarea.value = '';
     resetForm(allEffects);
   };
 
