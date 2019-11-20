@@ -30,7 +30,7 @@
     window.helpers.showItem(filtersWindow);
     closePreview.addEventListener('click', uploadClose);
     document.addEventListener('keydown', uploadCloseHandler);
-    window.helpers.hideItem(window.effects.effectLevel);
+    window.helpers.hideItem(window.effects.level);
   };
 
   upload.addEventListener('change', uploadShow);

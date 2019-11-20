@@ -70,6 +70,11 @@
 
   var showBigPhoto = function (data, current) {
     window.helpers.showItem(bigPic);
+    // var bigPicSocialClone = bigPicSocial.cloneNode(true);
+    // bigPicSocialClone.querySelector('.likes-count').textContent = data.likes;
+    // bigPicSocialClone.querySelector('.social__caption').textContent = data.description;
+    // bigPicSocialClone.querySelector('.comments-count').textContent = data.comments.length;
+    // bigPicSocial.parentNode.replaceChild(bigPicSocialClone, bigPicSocial);
     bigPicSocial.querySelector('.likes-count').textContent = data.likes;
     bigPicSocial.querySelector('.social__caption').textContent = data.description;
     bigPicSocial.querySelector('.comments-count').textContent = data.comments.length;
@@ -85,27 +90,27 @@
     commentsLoader.addEventListener('click', renderCommentsHandler);
 
     closeButton.addEventListener('click', closeBigPhoto);
-    closeButton.addEventListener('keydown', onBigPicKeydownEnter);
-    document.addEventListener('keydown', onBigPicKeydownEsc);
+    closeButton.addEventListener('keydown', bigPicKeydownEnterHandler);
+    document.addEventListener('keydown', bigPicKeydownEscHandler);
   };
 
-  var onBigPicKeydownEsc = function (evt) {
+  var bigPicKeydownEscHandler = function (evt) {
     window.helpers.isEscEvent(evt, closeBigPhoto);
   };
 
-  var onBigPicKeydownEnter = function (evt) {
+  var bigPicKeydownEnterHandler = function (evt) {
     window.helpers.isEnterEvent(evt, closeBigPhoto);
   };
 
-  var onCloseButtonClick = function () {
+  var closeButtonClickHandler = function () {
     closeBigPhoto();
   };
 
   var closeBigPhoto = function () {
     window.helpers.hideItem(bigPic);
-    closeButton.removeEventListener('click', onCloseButtonClick);
-    closeButton.removeEventListener('keydown', onBigPicKeydownEnter);
-    document.removeEventListener('keydown', onBigPicKeydownEsc);
+    closeButton.removeEventListener('click', closeButtonClickHandler);
+    closeButton.removeEventListener('keydown', bigPicKeydownEnterHandler);
+    document.removeEventListener('keydown', bigPicKeydownEscHandler);
   };
 
   var renderTemplate = function (image) {
@@ -187,7 +192,6 @@
   window.backend.load(URL, successHandler, errorHandler);
 
   window.data = {
-    bigPic: bigPic,
     pictures: pictures
   };
 

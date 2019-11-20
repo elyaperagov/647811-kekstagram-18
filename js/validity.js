@@ -85,8 +85,7 @@
   };
 
   var validate = function (tags) {
-    var result = true;
-    result = result && validateHashtags(tags);
+    var result = validateHashtags(tags);
     for (var i = 0; i < tags.length; i++) {
       var hastag = tags[i];
       result = result && validateHashtag(hastag);
@@ -101,7 +100,7 @@
     }
   };
 
-  var handler = function () {
+  var hashtagSplitHandler = function () {
     var hashtags = inputElement.value.toLowerCase().split(' ');
     if (inputElement.value !== '') {
       validate(hashtags);
@@ -112,7 +111,7 @@
     }
   };
 
-  buttonElement.addEventListener('click', handler);
+  buttonElement.addEventListener('click', hashtagSplitHandler);
 
   window.validity = {
     inputElement: inputElement,

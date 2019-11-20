@@ -7,7 +7,7 @@
   var imagePreview = document.querySelector('.img-upload__preview');
   var line = document.querySelector('.effect-level__line');
   var currentEffect;
-  var effectLevel = document.querySelector('.effect-level');
+  var level = document.querySelector('.effect-level');
   var colorDepth = document.querySelector('.effect-level__depth');
   var levelValue = document.querySelector('.effect-level__value');
   var main = document.querySelector('main');
@@ -116,11 +116,11 @@
       document.removeEventListener('mouseup', onMouseUp);
 
       if (dragged) {
-        var onClickPreventDefault = function (e) {
+        var clickPreventDefaultHandler = function (e) {
           e.preventDefault();
-          pin.removeEventListener('click', onClickPreventDefault);
+          pin.removeEventListener('click', clickPreventDefaultHandler);
         };
-        pin.addEventListener('click', onClickPreventDefault);
+        pin.addEventListener('click', clickPreventDefaultHandler);
       }
     };
     document.addEventListener('mousemove', onMouseMove);
@@ -146,9 +146,9 @@
 
   var removeLine = function (i, list) {
     if (list[i].class === 'effects__preview--none') {
-      effectLevel.classList.add('hidden');
+      level.classList.add('hidden');
     } else {
-      effectLevel.classList.remove('hidden');
+      level.classList.remove('hidden');
     }
   };
 
@@ -170,7 +170,6 @@
     }
   };
 
-  // ОТПРАВКА ФОРМЫ С ФОТО
   var sendFormCallback = function () {
     window.helpers.hideItem(formOverlay);
     main.classList.add('modal-open');
@@ -230,7 +229,7 @@
   };
 
   window.effects = {
-    effectLevel: effectLevel,
+    level: level,
     form: form
   };
 
